@@ -35,8 +35,7 @@ class ReviewAlumniController extends Controller
         $file = $request->file('photo');
         $filename = time() . '.' . $file->getClientOriginalExtension();
 
-        $photo_path = $request->file('photo')->storeAs('public/reviews', $filename);
-        $photo_path = str_replace('public/', '', $photo_path);
+        $photo_path = $request->file('photo')->storeAs('reviews', $filename, 'public');
 
         $reviews = ReviewAlumni::create([
             'name' => $data['name'],
@@ -79,8 +78,7 @@ class ReviewAlumniController extends Controller
         if ($file != null) {
             $filename = time() . '.' . $file->getClientOriginalExtension();
 
-            $photo_path = $request->file('photo')->storeAs('public/reviews', $filename);
-            $photo_path = str_replace('public/', '', $photo_path);
+            $photo_path = $request->file('photo')->storeAs('reviews', $filename, 'public');
         }
 
         $ganti = ReviewAlumni::find($id);
@@ -106,11 +104,10 @@ class ReviewAlumniController extends Controller
     {
         $ganti = ReviewAlumni::find($id);
         try {
-            Storage::delete('public/' . $ganti->photo);
+            Storage::disk('public')->delete($ganti->photo);
             $ganti->delete();
         } catch (\Throwable $th) {
         }
-        $ganti->delete();
         return redirect()->route('dashboard.admin.review-alumni.index')->with('success', 'Data Berhasil Dihapus');
     }
 }
