@@ -327,7 +327,7 @@
                                     <div class="alumni-card-front">
                                         <div class="alumni-image-content">
                                             <div class="alumni-card-image">
-                                                @if ($review->photo && file_exists(storage_path('app/public/' . $review->photo)))
+                                                @if ($review->photo)
                                                     <img src="{{ asset('storage/' . $review->photo) }}"
                                                         alt="{{ $review->name }}" class="alumni-img">
                                                 @else
