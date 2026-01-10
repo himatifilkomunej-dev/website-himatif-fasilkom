@@ -1,0 +1,99 @@
+{
+  "resources/css/app-dashboard.css": {
+    "file": "assets/app-dashboard-DgC271Qk.css",
+    "src": "resources/css/app-dashboard.css",
+    "isEntry": true
+  },
+  "resources/css/app-frontpage.css": {
+    "file": "assets/app-frontpage-CI3Xsr2o.css",
+    "src": "resources/css/app-frontpage.css",
+    "isEntry": true
+  },
+  "resources/css/frontpage/ckeditor.css": {
+    "file": "assets/ckeditor-CkK4TeR8.css",
+    "src": "resources/css/frontpage/ckeditor.css",
+    "isEntry": true
+  },
+  "resources/img/decoration/bg/1.svg": {
+    "file": "assets/1-CrvQyZUt.svg",
+    "src": "resources/img/decoration/bg/1.svg"
+  },
+  "resources/img/decoration/bg/2.svg": {
+    "file": "assets/2-oKhW1pjt.svg",
+    "src": "resources/img/decoration/bg/2.svg"
+  },
+  "resources/img/decoration/bg/3.svg": {
+    "file": "assets/3-DYc7aFOh.svg",
+    "src": "resources/img/decoration/bg/3.svg"
+  },
+  "resources/img/decoration/bg/man-bg-white.svg": {
+    "file": "assets/man-bg-white-CNjAkwbT.svg",
+    "src": "resources/img/decoration/bg/man-bg-white.svg"
+  },
+  "resources/img/decoration/bg/sitemap-bg-white.svg": {
+    "file": "assets/sitemap-bg-white-CAdeuMIX.svg",
+    "src": "resources/img/decoration/bg/sitemap-bg-white.svg"
+  },
+  "resources/img/decoration/bg/work-bg-primary.svg": {
+    "file": "assets/work-bg-primary-BHXTwTAN.svg",
+    "src": "resources/img/decoration/bg/work-bg-primary.svg"
+  },
+  "resources/img/decoration/memphis/10.svg": {
+    "file": "assets/10-sY4SanDC.svg",
+    "src": "resources/img/decoration/memphis/10.svg"
+  },
+  "resources/img/decoration/memphis/2.svg": {
+    "file": "assets/2-2hoARmdx.svg",
+    "src": "resources/img/decoration/memphis/2.svg"
+  },
+  "resources/img/decoration/memphis/3.svg": {
+    "file": "assets/3-Lb1OFyFl.svg",
+    "src": "resources/img/decoration/memphis/3.svg"
+  },
+  "resources/img/decoration/memphis/4.svg": {
+    "file": "assets/4-CWhey8q3.svg",
+    "src": "resources/img/decoration/memphis/4.svg"
+  },
+  "resources/img/decoration/memphis/8.svg": {
+    "file": "assets/8-Dq3Ca9GD.svg",
+    "src": "resources/img/decoration/memphis/8.svg"
+  },
+  "resources/img/decoration/title/info-1.svg": {
+    "file": "assets/info-1-CRu4_nOe.svg",
+    "src": "resources/img/decoration/title/info-1.svg"
+  },
+  "resources/img/decoration/title/info-2.svg": {
+    "file": "assets/info-2-CtSArThd.svg",
+    "src": "resources/img/decoration/title/info-2.svg"
+  },
+  "resources/img/decoration/title/info-3.svg": {
+    "file": "assets/info-3-C19YkiqR.svg",
+    "src": "resources/img/decoration/title/info-3.svg"
+  },
+  "resources/img/decoration/title/secondary-1.svg": {
+    "file": "assets/secondary-1-7ewydcCF.svg",
+    "src": "resources/img/decoration/title/secondary-1.svg"
+  },
+  "resources/img/decoration/title/secondary-2.svg": {
+    "file": "assets/secondary-2-BjRnFQw8.svg",
+    "src": "resources/img/decoration/title/secondary-2.svg"
+  },
+  "resources/img/decoration/title/secondary-3.svg": {
+    "file": "assets/secondary-3-BnSBKJTf.svg",
+    "src": "resources/img/decoration/title/secondary-3.svg"
+  },
+  "resources/img/decoration/title/warning-1.svg": {
+    "file": "assets/4-CWhey8q3.svg",
+    "src": "resources/img/decoration/memphis/4.svg"
+  },
+  "resources/img/decoration/title/warning-2.svg": {
+    "file": "assets/warning-2-lKBMxTwl.svg",
+    "src": "resources/img/decoration/title/warning-2.svg"
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-l0sNRNKZ.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  }
+}

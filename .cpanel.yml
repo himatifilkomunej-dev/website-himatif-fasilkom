@@ -1,0 +1,4 @@
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/himx5433/public_html
+    - /bin/rsync -av --delete public/ $DEPLOYPATH

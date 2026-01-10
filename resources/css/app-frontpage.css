@@ -1,0 +1,107 @@
+@import "./frontpage/frontpage.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Proper CSS Reset and Base Styles */
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px; /* Base font size for consistent rem calculations */
+    scroll-behavior: smooth;
+}
+
+html,
+body {
+    @apply overflow-x-hidden w-full m-0 p-0;
+    font-family: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        sans-serif;
+    line-height: 1.6;
+}
+
+/* Responsive Typography Scale */
+h1 {
+    @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold;
+}
+
+h2 {
+    @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold;
+}
+
+h3 {
+    @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold;
+}
+
+h4 {
+    @apply text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold;
+}
+
+h5 {
+    @apply text-base sm:text-lg md:text-xl lg:text-2xl font-medium;
+}
+
+h6 {
+    @apply text-sm sm:text-base md:text-lg lg:text-xl font-medium;
+}
+
+p {
+    @apply text-sm sm:text-base md:text-lg leading-relaxed;
+}
+
+a {
+    @apply text-current transition-colors duration-200;
+}
+
+/* Custom Himatif Components */
+@layer components {
+    /* Container System */
+    .container-responsive {
+        @apply w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+    }
+
+    .container-narrow {
+        @apply w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8;
+    }
+
+    .container-wide {
+        @apply w-full max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8;
+    }
+
+    /* Footer Components */
+    .footer-container {
+        @apply bg-himatif-cream text-himatif-navy;
+    }
+
+    .footer-social-icon {
+        @apply w-10 h-10 sm:w-12 sm:h-12 bg-himatif-navy text-white rounded-lg flex items-center justify-center cursor-pointer flex-shrink-0 hover:bg-opacity-80 transition-colors duration-200;
+    }
+
+    .footer-responsive-flex {
+        @apply flex flex-col lg:flex-row justify-between items-center gap-6 max-w-6xl mx-auto;
+    }
+
+    /* Navigation Components */
+    .nav-container {
+        @apply container-responsive flex items-center justify-between py-4;
+    }
+
+    .nav-logo {
+        @apply flex items-center space-x-3;
+    }
+
+    .nav-logo-text {
+        @apply text-xl sm:text-2xl md:text-3xl font-bold text-himatif-navy;
+    }
+
+    /* Button System */
+    .btn-primary {
+        @apply px-4 py-2 sm:px-6 sm:py-3 bg-himatif-navy text-white rounded-lg font-medium hover:bg-opacity-90 transition-all duration-200;
+    }
+
+    .btn-secondary {
+        @apply px-4 py-2 sm:px-6 sm:py-3 bg-himatif-cream text-himatif-navy border border-himatif-navy rounded-lg font-medium hover:bg-himatif-navy hover:text-white transition-all duration-200;
+    }
+}
