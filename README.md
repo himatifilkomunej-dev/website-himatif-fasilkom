@@ -1,9 +1,11 @@
 <div align="center">
 
 # Website Resmi HIMATIF  
-Himpunan Mahasiswa Teknologi Informasi
+Himpunan Mahasiswa Teknologi Informasi  
 
 Platform digital terpadu yang menjadi pusat informasi, layanan, dan pengelolaan organisasi HIMATIF dalam satu sistem modern.
+
+[https://himatifunej.com](https://himatifunej.com)
 
 </div>
 
@@ -47,12 +49,12 @@ Website ini berfungsi sebagai pusat kendali digital seluruh aktivitas HIMATIF.
 
 ## Tim Pengembang
 
-Pengerjaan sistem ini dilakukan oleh Sub Divisi Pengembangan Teknologi HIMATIF:
+Pengerjaan sistem ini dilakukan oleh Sub Divisi Pengembangan Teknologi Periode 2025/2026 HIMATIF:
 
 | Nama | Peran |
 |------|------|
 | Anugrah Farel Putra Firdyantara | Kepala Sub Divisi Pengembangan Teknologi |
-| Taqiyyudin Robbani | Staff Pengembang |
-| Firsandi Andraw Febriansyah | Staff Pengembang |
+| Taqiyyudin Robbani | Staff Pengembangan Teknologi |
+| Firsandi Andraw Febriansyah | Staff Pengembangan Teknologi |
 
 Sub divisi ini bertanggung jawab penuh atas perancangan, pengembangan, dan keberlanjutan sistem digital HIMATIF.
