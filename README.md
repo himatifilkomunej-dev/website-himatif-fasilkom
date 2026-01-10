@@ -27,22 +27,19 @@ Website ini mencakup berbagai modul utama yang mendukung seluruh aktivitas HIMAT
 Menyajikan informasi resmi organisasi, meliputi profil, visi dan misi, struktur kepengurusan, serta identitas HIMATIF sebagai organisasi mahasiswa Teknologi Informasi.
 
 ### Sistem Pemilu HIMATIF  
-Digunakan untuk mengelola seluruh proses pemilihan ketua dan wakil ketua HIMATIF, termasuk publikasi kandidat, tahapan pemilu, dan dokumentasi proses secara digital.
+Digunakan untuk mengelola seluruh proses pemilihan ketua umum HIMATIF, termasuk publikasi kandidat, tahapan pemilu, dan dokumentasi proses secara digital.
 
 ### NIM Checker  
 Sistem validasi data mahasiswa Teknologi Informasi untuk memastikan keanggotaan, hak akses layanan, dan keabsahan data dalam kegiatan organisasi.
 
 ### Berita dan Informasi  
-Menjadi media resmi publikasi HIMATIF untuk pengumuman, berita kegiatan, dan update organisasi.
+Menjadi media resmi publikasi HIMATIF untuk pengumuman, konten, berita kegiatan, dan update organisasi.
 
 ### Informasi Program Kerja  
 Setiap divisi dan departemen dapat menampilkan daftar program kerja, deskripsi kegiatan, serta dokumentasi pelaksanaannya.
 
 ### Sistem Alumni Teknologi Informasi  
-Digunakan untuk pendataan alumni, membangun jejaring alumni–mahasiswa, serta mendukung kegiatan dan kontribusi alumni terhadap HIMATIF.
-
-### Sistem Manajemen Pengurus (Admin HIMATIF)  
-Panel administrasi untuk pengurus HIMATIF dalam mengelola seluruh data dan modul sistem, termasuk anggota, pemilu, berita, program kerja, alumni, dan struktur organisasi.
+Digunakan untuk menampilkan pesan dan kesan alumni selama menjadi mahasiswa Teknologi Informasi
 
 Website ini berfungsi sebagai pusat kendali digital seluruh aktivitas HIMATIF.
 
@@ -59,8 +56,3 @@ Pengerjaan sistem ini dilakukan oleh Sub Divisi Pengembangan Teknologi HIMATIF:
 | Firsandi Andraw Febriansyah | Staff Pengembang |
 
 Sub divisi ini bertanggung jawab penuh atas perancangan, pengembangan, dan keberlanjutan sistem digital HIMATIF.
-
----
-
-## Visi Pengembangan
-Sistem ini dikembangkan untuk membangun ekosistem digital HIMATIF yang terintegrasi, profesional, dan berkelanjutan, sehingga seluruh aktivitas organisasi dapat berjalan lebih efektif, transparan, dan terdokumentasi dengan baik.
