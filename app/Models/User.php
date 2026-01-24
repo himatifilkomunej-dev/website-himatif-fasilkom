@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'nim','email', 'password', 'role_id', 'instagram', 'linkedin', 'periode'
+        'name', 'nim','email', 'password', 'role_id', 'instagram', 'linkedin', 'periode', 'periode_1', 'periode_2', 'periode_3'
     ];
 
     /**
@@ -37,7 +37,9 @@ class User extends Authenticatable
         'password' => 'hashed',
         'email_verified_at' => 'datetime',
         'periode' => 'json', // Cast periode attribute to array
-
+        'periode_1' => 'json',
+        'periode_2' => 'json',
+        'periode_3' => 'json',
     ];
 
     public function role()
