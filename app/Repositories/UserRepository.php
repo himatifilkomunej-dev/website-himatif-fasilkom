@@ -68,6 +68,13 @@ class UserRepository
         return User::where('status', '1')->get();
     }
 
+    public function byYear(string $year)
+    {
+        return User::whereJsonContains('periode', [
+            'year' => $year
+        ])->get();
+    }
+
     public function count(array $condition = [])
     {
         return User::when(count($condition) > 0, fn($q) => $q->where($condition))->count();
