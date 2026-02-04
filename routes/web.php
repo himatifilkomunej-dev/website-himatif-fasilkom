@@ -142,3 +142,9 @@ Route::group(['namespace' => 'Frontpage', 'as' => 'frontpage.', 'middleware' => 
     Route::get('pemilu/vote', 'PemiluController@votePemilu')->name('pemilu.vote');
     Route::post('pemilu/vote/submit', 'PemiluController@vote')->name('pemilu.submitVote');
 });
+
+// Tambahkan di paling atas file routes/web.php
+use App\Http\Controllers\Ajax\UserController as AjaxUserController;
+
+// Ubah routenya menjadi seperti ini
+Route::get('pengurus/filter', [AjaxUserController::class, 'filter'])->name('frontpage.pengurus.filter');

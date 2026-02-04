@@ -26,7 +26,27 @@ class UserRepository
             ->addColumn('name', fn($user) => $user->name)
             ->addColumn('nim', fn($user) => $user->nim)
             ->addColumn('division', function ($user) {
-                return $user->periode[0]['division_id'] ? Division::find($user->periode[0]['division_id'])->name . " ({$user->periode[0]['position']})" : '-';
+                if (empty($user->periode)) {
+                    return '-';
+                }
+                $periodes = collect($user->periode);
+
+                // ambil periode dengan year terbesar
+                $latest = $periodes
+                    ->sortByDesc(fn ($p) => (int) $p['year'])
+                    ->first();
+
+                if (!$latest || empty($latest['division_id'])) {
+                    return '-';
+                }
+
+                $division = Division::find($latest['division_id']);
+
+                if (!$division) {
+                    return '-';
+                }
+
+                return $division->name . " ({$latest['position']})";
             })
             ->addColumn('linkedin', fn($user) => $user->linkedin)
             ->addColumn('instagram', fn($user) => $user->instagram)
@@ -46,6 +66,13 @@ class UserRepository
     public function getPengurus()
     {
         return User::where('status', '1')->get();
+    }
+
+    public function byYear(string $year)
+    {
+        return User::whereJsonContains('periode', [
+            'year' => $year
+        ])->get();
     }
 
     public function count(array $condition = [])
