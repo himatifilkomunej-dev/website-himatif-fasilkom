@@ -1,18 +1,18 @@
 @extends('dashboard._layouts.app')
 
-@section('title', 'Edit Data Mahasiswa') {{-- title --}}
+@section('title', 'Tambah Data Mahasiswa') {{-- title --}}
 @section('header', 'NIM Checker') {{-- header --}}
 
 @section('breadcrumb') {{-- breadcrumb --}}
     <div class="breadcrumb-item active"><a href="{{ route('dashboard.admin.nim-checker.index') }}">NIM Checker</a></div>
-    <div class="breadcrumb-item">Edit Data</div>
+    <div class="breadcrumb-item">Tambah Data</div>
 @endsection {{-- end of breadcrumb --}}
 
 @section('content') {{-- content --}}
 
     <div class="row gutters-xs align-items-center justify-content-end my-4">
         <div class="col-lg">
-            <h4>Edit Data Mahasiswa</h4>
+            <h4>Tambah Data Mahasiswa</h4>
         </div>
         <div class="col col-md-auto">
             <a href="{{ route('dashboard.admin.nim-checker.index') }}" class="btn btn-outline-secondary">
@@ -22,23 +22,20 @@
     </div>
 
     {{-- row : form --}}
-    <form action="{{ route('dashboard.admin.nim-checker.update-manual', $data->id) }}" method="POST">
+    <form action="{{ route('dashboard.admin.nim-checker.store-manual') }}" method="POST">
         @csrf
-        @method('PUT')
         <div class="row">
             <div class="col-lg-8">
                 <div class="card">
                     <div class="card-body">
-                        {{-- input : nim (readonly) --}}
+                        {{-- input : nim --}}
                         @component('dashboard._components._form-group.input')
                             @slot('inputLabel', 'NIM')
                             @slot('inputName', 'nim')
                             @slot('inputId', 'input-nim')
                             @slot('inputIsRequired', true)
-                            @slot('inputValue', $data->nim)
-                            @slot('inputReadonly', true)
+                            @slot('inputPlaceholder', 'Contoh: 242410102001')
                         @endcomponent
-                        <small class="text-muted">NIM tidak bisa diubah</small>
 
                         {{-- input : name --}}
                         @component('dashboard._components._form-group.input')
@@ -46,7 +43,6 @@
                             @slot('inputName', 'name')
                             @slot('inputId', 'input-name')
                             @slot('inputIsRequired', true)
-                            @slot('inputValue', $data->name)
                         @endcomponent
 
                         {{-- input : angkatan --}}
@@ -55,7 +51,7 @@
                             @slot('inputName', 'angkatan')
                             @slot('inputId', 'input-angkatan')
                             @slot('inputIsRequired', true)
-                            @slot('inputValue', $data->angkatan)
+                            @slot('inputPlaceholder', 'Contoh: 2024')
                         @endcomponent
 
                         {{-- input : status --}}
@@ -63,11 +59,10 @@
                             <label for="input-status">Status <span class="text-danger">*</span></label>
                             <select class="form-control" name="status" id="input-status" required>
                                 <option value="">Pilih Status</option>
-                                <option value="Aktif" {{ $data->status == 'Aktif' ? 'selected' : '' }}>Aktif</option>
-                                <option value="Lulus" {{ $data->status == 'Lulus' ? 'selected' : '' }}>Lulus</option>
-                                <option value="Cuti" {{ $data->status == 'Cuti' ? 'selected' : '' }}>Cuti</option>
-                                <option value="Tidak Aktif" {{ $data->status == 'Tidak Aktif' ? 'selected' : '' }}>Tidak
-                                    Aktif</option>
+                                <option value="Aktif">Aktif</option>
+                                <option value="Lulus">Lulus</option>
+                                <option value="Cuti">Cuti</option>
+                                <option value="Tidak Aktif">Tidak Aktif</option>
                             </select>
                         </div>
 
@@ -80,7 +75,7 @@
                             </div>
                             <div class="col-auto">
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-save mr-2"></i>Update Data
+                                    <i class="fas fa-save mr-2"></i>Simpan Data
                                 </button>
                             </div>
                         </div>
