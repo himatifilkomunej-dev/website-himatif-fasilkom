@@ -16,4 +16,10 @@ class NIMChecker extends Model
         'name', 'nim',  'angkatan', 'status',
     ];
 
+    protected $casts = [
+        'nim' => 'string',
+        'id' => 'string',
+        'angkatan' => 'string',
+    ];
+
 }

@@ -58,7 +58,8 @@ Route::group(['middleware' => ['auth', 'role:admin'], 'prefix' => 'dashboard/adm
 
     //nim
     Route::get('nim-checker', 'NIMCheckerController@index')->name('nim-checker.index');
-    Route::post('nim-checker/update', 'NIMCheckerController@store')->name('nim-checker.update');
+    Route::post('nim-checker/store', 'NIMCheckerController@store')->name('nim-checker.update');
+    Route::delete('nim-checker/{id}', 'NIMCheckerController@destroy')->name('nim-checker.destroy');
 
     // Himatif x Cakap
     Route::get('cakap','CakapHimatif@index')->name('cakap.index');
