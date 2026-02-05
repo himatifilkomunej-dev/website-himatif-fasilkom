@@ -16,9 +16,10 @@
                 <tr>
                     <td style="width:80%">
                         @component('dashboard._components._form-group.input-year')
-                            @slot('inputLabel', 'Tahun')
+                            @slot('inputLabel', 'Tahun Periode')
                             @slot('inputName', 'periode_year[]')
                             @slot('inputId', 'input-year_entry')
+                            @slot('inputIsRequired', true)
                             @slot('inputValue', $value['year'])
                         @endcomponent
                         @component('dashboard._components._form-group.input-select')
@@ -57,8 +58,9 @@
             <tr>
                 <td>
                     @component('dashboard._components._form-group.input-year')
-                        @slot('inputLabel', 'Tahun Masuk')
+                        @slot('inputLabel', 'Tahun Periode')
                         @slot('inputName', 'periode_year[]')
+                        @slot('inputIsRequired', true)
                         @slot('inputId', 'input-periode-year_entry')
                     @endcomponent
                     @component('dashboard._components._form-group.input-select')

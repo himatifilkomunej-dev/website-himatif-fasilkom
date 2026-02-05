@@ -18,15 +18,16 @@
             <p class="desc opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-300" data-animate>Gunakan
                 Pencarian Untuk Menampilkan List Detail Mahasiswa</p>
 
-            <form action="{{ route('frontpage.nim-checker') }}"
+            <form action="{{ route('frontpage.nim-checker') }}" id="searchForm"
                 class="search-form opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-400" data-animate>
-                <input type="search" name="q" value="{{ Request::get('q') }}"
-                    placeholder="Masukan NIM atau Nama Mahasiswa" required>
+                <input type="search" name="q" id="searchInput" value="{{ Request::get('q') }}"
+                    placeholder="Masukan NIM atau Nama Mahasiswa" autocomplete="off">
                 <button type="submit"></button>
-                <input type="hidden" name="limit" value="{{ Request::get('limit') ?? 8 }}">
+                <input type="hidden" name="limit" id="limitInput" value="{{ Request::get('limit') ?? 8 }}">
             </form>
 
-            <div class="nim-list opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-500" data-animate>
+            <div class="nim-list opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-500" data-animate
+                id="nimList">
                 @foreach ($nims as $nim)
                     <div class="nim-item opacity-0 translate-y-8 transition-all duration-1000 ease-out" data-animate>
                         <p><strong>Nama:</strong> {{ $nim->name }}</p>
@@ -38,11 +39,11 @@
             </div>
 
             @if (isset($nims) && $nims !== [])
-                <form action="{{ route('frontpage.nim-checker') }}"
+                <form action="{{ route('frontpage.nim-checker') }}" id="moreForm"
                     class="more-form opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-600" data-animate>
-                    <input type="hidden" name="q" value="{{ Request::get('q') }}">
+                    <input type="hidden" name="q" id="moreQuery" value="{{ Request::get('q') }}">
                     <input type="hidden" name="limit" value="{{ Request::get('limit') + 8 }}">
-                    <button type="submit" class="more-btn">Tampilkan Lebih Banyak</button>
+                    <button type="button" id="moreBtn" class="more-btn">Tampilkan Lebih Banyak</button>
                 </form>
             @endif
         </main>
@@ -307,6 +308,97 @@
     </style>
 
     <script>
+        // Live search functionality
+        let searchTimeout;
+        const searchInput = document.getElementById('searchInput');
+        const nimList = document.getElementById('nimList');
+        const limitInput = document.getElementById('limitInput');
+        let currentLimit = {{ Request::get('limit') ?? 8 }};
+
+        // Live search on input
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            const query = this.value.trim();
+
+            searchTimeout = setTimeout(() => {
+                if (query.length > 0) {
+                    performSearch(query, 8);
+                } else {
+                    nimList.innerHTML = '';
+                }
+            }, 300); // Debounce 300ms
+        });
+
+        // Handle form submit
+        document.getElementById('searchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const query = searchInput.value.trim();
+            if (query.length > 0) {
+                performSearch(query, 8);
+            }
+        });
+
+        // Handle "Tampilkan Lebih Banyak" button
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.id === 'moreBtn') {
+                e.preventDefault();
+                const query = searchInput.value.trim();
+                currentLimit += 8;
+                performSearch(query, currentLimit);
+            }
+        });
+
+        function performSearch(query, limit) {
+            const url = `{{ route('frontpage.nim-checker') }}?q=${encodeURIComponent(query)}&limit=${limit}`;
+
+            fetch(url, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.text())
+                .then(html => {
+                    // Parse HTML response
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const newNimList = doc.getElementById('nimList');
+                    const newMoreForm = doc.getElementById('moreForm');
+
+                    if (newNimList) {
+                        nimList.innerHTML = newNimList.innerHTML;
+
+                        // Update or remove "Tampilkan Lebih Banyak" button
+                        const existingMoreForm = document.getElementById('moreForm');
+                        if (newMoreForm) {
+                            if (existingMoreForm) {
+                                existingMoreForm.innerHTML = newMoreForm.innerHTML;
+                            } else {
+                                nimList.insertAdjacentHTML('afterend', newMoreForm.outerHTML);
+                            }
+                        } else {
+                            if (existingMoreForm) {
+                                existingMoreForm.remove();
+                            }
+                        }
+
+                        // Animate new items
+                        const items = nimList.querySelectorAll('.nim-item');
+                        items.forEach((item, index) => {
+                            item.style.opacity = '0';
+                            item.style.transform = 'translateY(32px)';
+                            setTimeout(() => {
+                                item.style.transition = 'all 500ms ease-out';
+                                item.style.opacity = '1';
+                                item.style.transform = 'translateY(0)';
+                            }, index * 50);
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Search error:', error);
+                });
+        }
+
         // Smooth scroll animations with Intersection Observer
         document.addEventListener('DOMContentLoaded', function() {
             // Create intersection observer for animations

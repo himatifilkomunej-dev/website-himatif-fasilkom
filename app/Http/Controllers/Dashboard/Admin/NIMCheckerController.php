@@ -28,43 +28,32 @@ class NIMCheckerController extends Controller
     }
     //
     public function store(Request $request) {
-        $dataCollection = collect(json_decode(file_get_contents($request['data']), true));
+        $file = $request->file('data');
         
+        if (!$file) {
+            return redirect()->back()->with([
+                'type' => 'error',
+                'message' => 'File CSV tidak ditemukan'
+            ]);
+        }
+        
+        $csvData = array_map(function($line) {
+            return str_getcsv($line, ';');
+        }, explode("\n", $file->get()));
+        $header = array_shift($csvData); // Remove header row
         
         NIMChecker::truncate();
-        foreach ($dataCollection as $mhsdata) {
-            $data_kuliah = $mhsdata['dataLengkap']['datastatuskuliah'];
-            $mhs = $mhsdata['mahasiswa'];
-            $data_awal =  $data_kuliah[0];
-            $recent_status = end($data_kuliah);
-
-            $angkatan = substr($data_awal['id_smt'], 0, 4);
-            $status_akhir = $recent_status['nm_stat_mhs'];
-
-            if ($status_akhir == "Drop-Out/Putus Studi"){
-                continue;
-            }
-
-            $nimChecker = new NIMChecker;
+        
+        foreach ($csvData as $row) {
+            if (empty($row[0])) continue; // Skip empty rows
             
-            $nimChecker->name = $mhs['nama'];
-            $nimChecker->id = $mhs['id'];
-            $nimChecker->nim = $mhs['nipd'];
-            $nimChecker->angkatan = $angkatan;
-            $nimChecker->status = $status_akhir;
-
-            // // Ada data yg duplikat dan isinya berbeda, harus check manual terutama angkatan 22
-            // try {
-                $nimChecker->save();
-            // } catch (\Illuminate\Database\QueryException $e) {
-            //     // Handle unique constraint violation
-            //     if ($e->errorInfo[1] == 1062) { // MySQL error code for duplicate entry
-            //         // Log the duplicate or just skip the record
-            //         continue;
-            //     }
-            //     // If it's another type of error, rethrow it
-            //     throw $e;
-            // }
+            $nimChecker = new NIMChecker;
+            $nimChecker->id = $row[1] ?? ''; // id = nim
+            $nimChecker->name = $row[0] ?? '';
+            $nimChecker->nim = $row[1] ?? '';
+            $nimChecker->angkatan = $row[2] ?? '';
+            $nimChecker->status = $row[3] ?? '';
+            $nimChecker->save();
         }
          
         return redirect()->route('dashboard.admin.nim-checker.index')->with([

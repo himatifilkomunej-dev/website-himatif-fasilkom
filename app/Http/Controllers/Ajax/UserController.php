@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Ajax;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Repositories\UserRepository;
-
+use App\Services\PengurusService;
 class UserController extends Controller
 {
     private $userRepository;
@@ -32,5 +32,12 @@ class UserController extends Controller
         } else {
             return response()->error('User Not Found');
         }
+    }
+
+    public function filter(Request $request, PengurusService $service)
+    {
+        return response()->json(
+            $service->byYear($request->year)
+        );
     }
 }

@@ -182,104 +182,95 @@
     @push('script')
         {{-- script --}}
         <script>
-            "use strict";
-            var i = 0;
-            $("#dynamic-ar").click(function() {
-                ++i;
-                $("#dynamicAddRemove").append(
-                    `<tr>
-                <td style="width:70%">
-                    <div class="form-group mb-3">
-    <label for="">
-        Tahun Masuk
-            </label>
+        "use strict";
 
-    <div class="input-group">
-        <input type="text" name="periode_year[]" id="input-periode-year_entry" value="" class="form-control form-control-year   ">
-        <div class="input-group-append" disabled="">
-            <span class="input-group-text" id="basic-addon2"><i class="fas fa-calendar-alt"></i></span>
-        </div>
-    </div>
-
-    </div>
-                    <div class="form-group">
-    <label for="">
-        Divisi
-                    <span class="text-muted text-secondary">(harus diisi)</span>
-            </label> <br>
-    <select name="periode_division[]" id="input-periode-division_id" data-width="100%" data-size="5" data-live-search="true" data-live-search-placeholder="Cari..." title="Pilih Divisi" required="" class=" " style="width: 100%;">
-        
-                    <option value="1">
-                Badan Pengurus Harian
-            </option>
-                    <option value="2">
-                Pengembangan Sumber Daya Mahasiswa
-            </option>
-                    <option value="3">
-                Penelitian dan Pengembangan
-            </option>
-                    <option value="4">
-                Hubungan Mahasiswa
-            </option>
-                    <option value="5">
-                Hubungan Luar
-            </option>
-                    <option value="6">
-                Media Sosial
-            </option>
-                    <option value="7">
-                Media Teknologi
-            </option>
-                    <option value="8">
-                Media Informasi
-            </option>
-                    <option value="9">
-                Pengembangan Teknologi
-            </option>
-            </select>
-    
-    </div>
-                    <div class="form-group">
-    <label for="">
-        Jabatan
-                    <span class="text-muted text-secondary">(harus diisi)</span>
-            </label> <br>
-    <select name="periode_position[]" id="input-periode-position" data-width="100%" data-size="5" data-live-search="true" data-live-search-placeholder="Cari..." title="Pilih Jabatan" required="" class=" " style="width: 100%;">
-        
-                    <option value="Ketua Umum">
-                Ketua Umum
-            </option>
-                    <option value="Sekretaris">
-                Sekretaris
-            </option>
-                    <option value="Bendahara">
-                Bendahara
-            </option>
-                    <option value="Kepala Divisi">
-                Kepala Divisi
-            </option>
-                    <option value="Kepala Subdivisi">
-                Kepala Subdivisi
-            </option>
-                    <option value="Anggota">
-                Anggota
-            </option>
-                    <option value="Demisioner">
-                Demisioner
-            </option>
-            </select>
-    
-    </div>
-                </td>
-                <td>
-
-                    <button type="button" class="btn btn-outline-danger remove-input-field">Delete</button>
-                </td>
-            </tr>`
-                );
+        /**
+         * Init year picker
+         */
+        function initYearPicker(context = document) {
+            $(context).find('.form-control-year').datepicker({
+                format: "yyyy",
+                viewMode: "years",
+                minViewMode: "years",
+                autoclose: true
             });
-            $(document).on('click', '.remove-input-field', function() {
-                $(this).parents('tr').remove();
+        }
+
+        $(document).ready(function () {
+
+            // init untuk input pertama (yang sudah ada di DOM)
+            initYearPicker();
+
+            // add row
+            $("#dynamic-ar").on("click", function () {
+
+                const row = $(`
+                    <tr>
+                        <td style="width:70%">
+
+                            <div class="form-group mb-3">
+                                <label>Tahun Periode</label>
+                                <div class="input-group">
+                                    <input type="text"
+                                        name="periode_year[]"
+                                        class="form-control form-control-year"
+                                        required>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Divisi <span class="text-muted">(harus diisi)</span></label>
+                                <select name="periode_division[]" class="form-control" required>
+                                    <option value="1">Badan Pengurus Harian</option>
+                                    <option value="2">Pengembangan Sumber Daya Mahasiswa</option>
+                                    <option value="3">Penelitian dan Pengembangan</option>
+                                    <option value="4">Hubungan Mahasiswa</option>
+                                    <option value="5">Hubungan Luar</option>
+                                    <option value="6">Media Sosial</option>
+                                    <option value="7">Media Teknologi</option>
+                                    <option value="8">Media Informasi</option>
+                                    <option value="9">Pengembangan Teknologi</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Jabatan <span class="text-muted">(harus diisi)</span></label>
+                                <select name="periode_position[]" class="form-control" required>
+                                    <option value="Ketua Umum">Ketua Umum</option>
+                                    <option value="Sekretaris">Sekretaris</option>
+                                    <option value="Bendahara">Bendahara</option>
+                                    <option value="Kepala Divisi">Kepala Divisi</option>
+                                    <option value="Kepala Subdivisi">Kepala Subdivisi</option>
+                                    <option value="Anggota">Anggota</option>
+                                    <option value="Demisioner">Demisioner</option>
+                                </select>
+                            </div>
+
+                        </td>
+                        <td class="align-middle">
+                            <button type="button"
+                                    class="btn btn-outline-danger remove-input-field">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                `);
+
+                $("#dynamicAddRemove").append(row);
+
+                initYearPicker(row);
             });
+
+            // remove row
+            $(document).on("click", ".remove-input-field", function () {
+                $(this).closest("tr").remove();
+            });
+
+        });
         </script>
     @endpush {{-- end of script --}}

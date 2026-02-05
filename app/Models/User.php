@@ -37,9 +37,9 @@ class User extends Authenticatable
         'password' => 'hashed',
         'email_verified_at' => 'datetime',
         'periode' => 'json', // Cast periode attribute to array
-
     ];
 
+    
     public function role()
     {
         return $this->belongsTo(Role::class);
