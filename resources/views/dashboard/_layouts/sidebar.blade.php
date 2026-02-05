@@ -62,38 +62,44 @@
                     </a>
                 </li>
 
-                <li class="menu-header">Pages</li>
+                {{-- <li class="menu-header">Pages</li>
                 <li class="nav-item {{ Request::is('dashboard/admin/page-contents*') ? 'active' : '' }}">
                     <a href="{{ url('/dashboard/admin/page-contents') }}" class="nav-link">
                         <i class="fas fa-pager"></i> <span>Atur Konten</span>
                     </a>
-                </li>
+                </li> --}}
 
                 <li class="menu-header">Pemilu</li>
 
-                <li class="nav-item {{ Request::is('dashboard/admin/pemilu-vote*') ? 'active' : '' }}">
-                    <a href="{{ url('/dashboard/admin/pemilu-vote?status=0') }}" class="nav-link">
-                        <i class="fas fa-pager"></i> <span>Vote</span>
-                    </a>
-                </li>
-
-                <li class="nav-item {{ Request::is('dashboard/admin/pemilu-candidate*') ? 'active' : '' }}">
-                    <a href="{{ url('/dashboard/admin/pemilu-candidate') }}" class="nav-link">
-                        <i class="fas fa-pager"></i> <span>Kandidate</span>
-                    </a>
+                <li class="nav-item dropdown {{ Request::is('dashboard/admin/pemilu*') ? 'active' : '' }}">
+                    <a href="#" class="nav-link has-dropdown"><i class="fas fa-vote-yea"></i>
+                        <span>Pemilu</span></a>
+                    <ul class="dropdown-menu">
+                        <li class="{{ Request::is('dashboard/admin/pemilu-vote*') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ url('/dashboard/admin/pemilu-vote?status=0') }}">Vote</a>
+                        </li>
+                        <li class="{{ Request::is('dashboard/admin/pemilu-candidate*') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ url('/dashboard/admin/pemilu-candidate') }}">Kandidate</a>
+                        </li>
+                    </ul>
                 </li>
 
                 <li class="menu-header">Lainnya</li>
-                <li class="nav-item {{ Request::is('dashboard/admin/nim-checker') ? 'active' : '' }}">
-                    <a href="{{ url('/dashboard/admin/nim-checker') }}" class="nav-link">
-                        <i class="fas fa-pager"></i> <span>NIM Checker</span>
-                    </a>
+                <li
+                    class="nav-item dropdown {{ Request::is('dashboard/admin/nim-checker') || Request::is('dashboard/admin/cakap') ? 'active' : '' }}">
+                    <a href="#" class="nav-link has-dropdown"><i class="fas fa-ellipsis-h"></i>
+                        <span>Lainnya</span></a>
+                    <ul class="dropdown-menu">
+                        <li class="{{ Request::is('dashboard/admin/nim-checker') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ url('/dashboard/admin/nim-checker') }}">NIM Checker</a>
+                        </li>
+                    </ul>
                 </li>
-                <li class="nav-item {{ Request::is('dashboard/admin/cakap') ? 'active' : '' }}">
+                {{-- <li class="nav-item {{ Request::is('dashboard/admin/cakap') ? 'active' : '' }}">
                     <a href="{{ url('/dashboard/admin/cakap?status=0') }}" class="nav-link">
                         <i class="fas fa-pager"></i> <span>CakapXHimatif</span>
                     </a>
-                </li>
+                </li> --}}
             @else
                 <li class="nav-item {{ Request::is('dashboard/pengurus') ? 'active' : '' }}">
                     <a href="{{ route('dashboard.pengurus.index') }}" class="nav-link">
