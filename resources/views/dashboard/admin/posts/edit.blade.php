@@ -45,7 +45,7 @@
             </div>
 
             {{-- col : input --}}
-            <div class="col-lg-8">
+            <div class="col-lg">
                 <div class="card">
                     <div class="card-body">
                         {{-- input : title --}}
