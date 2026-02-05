@@ -4,12 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Laravel\Scout\Searchable;
 
 class NIMChecker extends Model
 {
     use HasFactory;
-    use Searchable;
 
     public $timestamps = false;
     const CREATED_AT = 'creation_date';
@@ -17,13 +15,5 @@ class NIMChecker extends Model
     protected $fillable = [
         'name', 'nim',  'angkatan', 'status',
     ];
-
-    public function toSearchableArray()
-    {
-        return [
-            'nim' => (int) $this->nim,
-            'name' => $this->name
-        ];
-    }
 
 }

@@ -36,6 +36,7 @@
                             @slot('inputPreviewIdentity', 'img-post')
                             @slot('inputName', 'data')
                             @slot('inputId', 'input-data')
+                            @slot('inputAccept', '.csv')
                             {{-- @slot('inputIsRequired', true) --}}
                         @endcomponent
                     </div>
