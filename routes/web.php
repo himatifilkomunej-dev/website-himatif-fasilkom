@@ -58,6 +58,10 @@ Route::group(['middleware' => ['auth', 'role:admin'], 'prefix' => 'dashboard/adm
 
     //nim
     Route::get('nim-checker', 'NIMCheckerController@index')->name('nim-checker.index');
+    Route::get('nim-checker/create', 'NIMCheckerController@create')->name('nim-checker.create');
+    Route::post('nim-checker/store-manual', 'NIMCheckerController@storeManual')->name('nim-checker.store-manual');
+    Route::get('nim-checker/{id}/edit', 'NIMCheckerController@edit')->name('nim-checker.edit');
+    Route::put('nim-checker/{id}', 'NIMCheckerController@updateManual')->name('nim-checker.update-manual');
     Route::post('nim-checker/store', 'NIMCheckerController@store')->name('nim-checker.update');
     Route::delete('nim-checker/{id}', 'NIMCheckerController@destroy')->name('nim-checker.destroy');
 

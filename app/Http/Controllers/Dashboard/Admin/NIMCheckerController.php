@@ -77,6 +77,84 @@ class NIMCheckerController extends Controller
         ]);
     }
     
+    public function create()
+    {
+        try {
+            $contents = $this->pageContentRepository->get();
+            return view('dashboard.admin.nim-checker.create', compact('contents'));
+        } catch (\Exception $e) {
+            abort(404);
+        }
+    }
+    
+    public function storeManual(Request $request)
+    {
+        $request->validate([
+            'nim' => 'required|unique:n_i_m_checkers,nim|max:20',
+            'name' => 'required|max:255',
+            'angkatan' => 'required|max:10',
+            'status' => 'required|in:Aktif,Lulus,Cuti,Tidak Aktif'
+        ]);
+        
+        try {
+            $nimChecker = new NIMChecker;
+            $nimChecker->id = $request->nim; // ID sama dengan NIM
+            $nimChecker->nim = $request->nim;
+            $nimChecker->name = $request->name;
+            $nimChecker->angkatan = $request->angkatan;
+            $nimChecker->status = $request->status;
+            $nimChecker->save();
+            
+            return redirect()->route('dashboard.admin.nim-checker.index')->with([
+                'type' => 'success',
+                'message' => 'Data mahasiswa berhasil ditambahkan'
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->back()->with([
+                'type' => 'error',
+                'message' => 'Gagal menambahkan data: ' . $e->getMessage()
+            ]);
+        }
+    }
+    
+    public function edit($id)
+    {
+        try {
+            $contents = $this->pageContentRepository->get();
+            $data = NIMChecker::findOrFail($id);
+            return view('dashboard.admin.nim-checker.edit', compact('contents', 'data'));
+        } catch (\Exception $e) {
+            abort(404);
+        }
+    }
+    
+    public function updateManual(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|max:255',
+            'angkatan' => 'required|max:10',
+            'status' => 'required|in:Aktif,Lulus,Cuti,Tidak Aktif'
+        ]);
+        
+        try {
+            $nimChecker = NIMChecker::findOrFail($id);
+            $nimChecker->name = $request->name;
+            $nimChecker->angkatan = $request->angkatan;
+            $nimChecker->status = $request->status;
+            $nimChecker->save();
+            
+            return redirect()->route('dashboard.admin.nim-checker.index')->with([
+                'type' => 'success',
+                'message' => 'Data mahasiswa berhasil diupdate'
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->back()->with([
+                'type' => 'error',
+                'message' => 'Gagal mengupdate data: ' . $e->getMessage()
+            ]);
+        }
+    }
+    
     public function destroy($id)
     {
         try {
