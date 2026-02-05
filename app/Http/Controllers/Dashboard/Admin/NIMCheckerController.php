@@ -21,12 +21,13 @@ class NIMCheckerController extends Controller
     {
         try {
             $contents = $this->pageContentRepository->get();
-            return view('dashboard.admin.nim-checker.index', compact('contents'));
+            $data = NIMChecker::orderBy('angkatan', 'desc')->orderBy('nim', 'asc')->get();
+            return view('dashboard.admin.nim-checker.index', compact('contents', 'data'));
         } catch (\Exception $e) {
             abort(404);
         }
     }
-    //
+    
     public function store(Request $request) {
         $file = $request->file('data');
         
@@ -42,10 +43,18 @@ class NIMCheckerController extends Controller
         }, explode("\n", $file->get()));
         $header = array_shift($csvData); // Remove header row
         
-        NIMChecker::truncate();
+        $successCount = 0;
+        $skipCount = 0;
         
         foreach ($csvData as $row) {
-            if (empty($row[0])) continue; // Skip empty rows
+            if (empty($row[0]) || empty($row[1])) continue; // Skip empty rows
+            
+            // Check if NIM already exists
+            $exists = NIMChecker::where('nim', $row[1])->exists();
+            if ($exists) {
+                $skipCount++;
+                continue;
+            }
             
             $nimChecker = new NIMChecker;
             $nimChecker->id = $row[1] ?? ''; // id = nim
@@ -54,11 +63,35 @@ class NIMCheckerController extends Controller
             $nimChecker->angkatan = $row[2] ?? '';
             $nimChecker->status = $row[3] ?? '';
             $nimChecker->save();
+            $successCount++;
         }
          
+        $message = "Berhasil menambahkan {$successCount} data";
+        if ($skipCount > 0) {
+            $message .= ", {$skipCount} data dilewati (NIM sudah ada)";
+        }
+        
         return redirect()->route('dashboard.admin.nim-checker.index')->with([
             'type' => 'success',
-            'message' => 'Tambah Data NIM Berhasil'
+            'message' => $message
         ]);
+    }
+    
+    public function destroy($id)
+    {
+        try {
+            $nimChecker = NIMChecker::findOrFail($id);
+            $nimChecker->delete();
+            
+            return redirect()->route('dashboard.admin.nim-checker.index')->with([
+                'type' => 'success',
+                'message' => 'Data berhasil dihapus'
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->back()->with([
+                'type' => 'error',
+                'message' => 'Gagal menghapus data'
+            ]);
+        }
     }
 }
