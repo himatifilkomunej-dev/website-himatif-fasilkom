@@ -8,34 +8,34 @@
     <!-- Main Content -->
     <main>
         <img src="{{ asset('img/bagian/3.png') }}"
-            class="header-decoration-left opacity-0 -translate-x-8 transition-all duration-1000 ease-out hidden md:block"
+            class="hidden transition-all duration-1000 ease-out -translate-x-8 opacity-0 header-decoration-left md:block"
             data-animate-left>
         <img src="{{ asset('img/bagian/4.png') }}"
-            class="header-decoration-right opacity-0 translate-x-8 transition-all duration-1000 ease-out hidden md:block"
+            class="hidden transition-all duration-1000 ease-out translate-x-8 opacity-0 header-decoration-right md:block"
             data-animate-right>
         <!-- Hero Section -->
         <section class="bg-[#FEF9F1] relative px-4 py-16 overflow-hidden md:px-6 md:py-24">
             <!-- Background Patterns -->
             <!-- <div class="absolute top-0 left-0 opacity-20">
-                                                                                                                                                                                                                                                                    <div class="w-64 h-64 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full"></div>
+                                                                                                                                                                                                                                                                    <div class="w-64 h-64 rounded-full bg-gradient-to-br from-gray-200 to-gray-300"></div>
                                                                                                                                                                                                                                                          </div>
                                                                                                                                                                                                                                                                 <div class="absolute bottom-0 right-0 opacity-20">
-                                                                                                                                                                                                                                                                    <div class="w-64 h-64 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full"></div>
+                                                                                                                                                                                                                                                                    <div class="w-64 h-64 rounded-full bg-gradient-to-br from-gray-200 to-gray-300"></div>
                                                                                                                                                                                                                                                                 </div> -->
 
-            <div class="container-responsive relative z-10 flex justify-center">
+            <div class="relative z-10 flex justify-center container-responsive">
                 <div class="flex flex-col items-center">
                     <!-- Left Content -->
                     <div class="inline-block px-4 py-3 sm:px-8 sm:py-4 mb-6 text-white rounded-full bg-[#910E19] opacity-0 translate-y-8 transition-all duration-1000 ease-out"
                         data-animate>
-                        <span class="pengurus-title text-lg sm:text-xl md:text-4xl lg:text-6xl font-semibold">DIVISI &
+                        <span class="text-lg font-semibold pengurus-title sm:text-xl md:text-4xl lg:text-6xl">DIVISI &
                             PENGURUS</span>
                     </div>
-                    <h1 class="mb-6 text-xl font-black text-gray-900 md:text-8xl opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-200"
+                    <h1 class="mb-6 text-xl font-black text-gray-900 transition-all duration-1000 ease-out delay-200 translate-y-8 opacity-0 md:text-8xl"
                         data-animate>
                         HIMATIF
                     </h1>
-                    <p class="max-w-6xl text-lg leading-relaxed text-center text-gray-600 opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-400"
+                    <p class="max-w-6xl text-lg leading-relaxed text-center text-gray-600 transition-all duration-1000 ease-out translate-y-8 opacity-0 delay-400"
                         data-animate>
                         {{ $header['2-text2']->content ?? 'HIMATIF memiliki struktur kepengurusan yang bertanggung jawab atas berbagai aspek dan kegiatan organisasi. Setiap divisi memiliki tugas pokok dan fungsi masing-masing untuk mencapai tujuan organisasi secara keseluruhan.' }}
                     </p>
@@ -46,10 +46,10 @@
         <!-- Divisi Sections -->
         <section
             class="py-12 sm:py-16 bg-[#02314A] rounded-t-[2rem] sm:rounded-t-[4rem] translate-y-8 transition-all duration-1000 ease-out delay-600"data-animate>
-            <div class="container-responsive space-y-12 sm:space-y-16">
+            <div class="space-y-12 container-responsive sm:space-y-16">
 
                 {{-- DROPDOWN --}}
-                <div class="mb-14 flex justify-center translate-y-8 transition-all duration-1000 ease-out delay-800"
+                <div class="flex justify-center transition-all duration-1000 ease-out translate-y-8 mb-14 delay-800"
                     data-animate>
                     <select id="yearSelect"
                         class="
@@ -739,6 +739,26 @@
             gap: 0.5rem !important;
             /* Reduce gap between icon and text */
         }
+
+
+        /* FOTO - Hilang setelah 1s */
+        .profile-image {
+            transition: all 0.5s cubic-bezier(0.4,0,0.2,1) !important;
+        }
+
+
+        /* VIDEO - Muncul + Play setelah 0.7s */
+        .profile-video {
+            opacity: 0 !important;
+            transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1) 0.7s !important;
+            z-index: 30 !important;
+        }
+
+        .video-card:hover .profile-video {
+            opacity: 1 !important;
+        }
+
+
     </style>
 @endsection
 
@@ -922,46 +942,65 @@
             return html;
         }
 
+function renderMemberCard(user) {
+    let mediaContent = '';
+    if (user.profile_video) {
+        //  GIF VERSION - AUTOPLAY FOREVER NO CLICK!
+        mediaContent = `        
+        <!--  GIF (z-30 - LOOP SELAMANYA!) -->
+        <img class="absolute inset-0 w-full h-full object-cover z-[30] profile-video" 
+             src="/storage/${user.profile_video.replace(/\\.(mp4|mov|avi)$/i, '.gif')}" 
+             alt="GIF ${user.name}" loading="lazy">
+        `;
+    }
+
+    return `
+    <div class="transition-opacity duration-500 ease-out opacity-0 member-card-animate video-card" data-video="${user.profile_video || ''}">
+        <div class="relative overflow-hidden shadow-lg rounded-2xl member-card-fixed group">
+            <div class="relative flex flex-col justify-end member-card-red-section">
+                
+                ${mediaContent}
+                
+                <!-- FOTO STATIC (z-20) -->
+                <img src="/storage/${user.photo}"
+                     class="absolute inset-0 w-full h-full object-cover z-[20] profile-image transition-all duration-1000 ease-out"
+                     alt="${user.name}" loading="lazy">
+                     
+                <!-- NAME OVERLAY (z-60) -->
+                <div class="relative z-[60] w-full px-4 py-3 text-center bg-black/60 backdrop-blur-sm">
+                    <h4 class="text-xl font-bold text-white member-name-text">${user.name}</h4>
+                    <p class="text-sm text-white/90">${user.position}</p>
+                </div>
+            </div>
+            
+            <div class="bg-[#910E19] flex justify-between px-6 py-3">
+                <span class="text-[#FEF9F1] text-3xl">→</span>
+                <div class="flex gap-3">${renderSocial(user)}</div>
+            </div>
+        </div>
+    </div>`;
+}
 
 
-        function renderMemberCard(user) {
-            return `
-                <div class="opacity-0 transition-opacity duration-500 ease-out member-card-animate">
-                    <div class="relative w-full max-w-xs mx-auto rounded-2xl overflow-hidden shadow-lg member-card-fixed">
-                        <div class="relative flex flex-col items-center justify-end pb-4 member-card-red-section" style="clip-path: polygon(24px 0, 100% 0, 100% 100%, 0 100%, 0 24px);">
-                        <img src="/storage/${user.photo}" class="absolute inset-0 w-full h-full object-cover">
-                        <div class="relative z-10 text-center bg-black/50 backdrop-blur-sm px-4 py-3 rounded-lg w-full mx-6">
-                            <h4 class="text-xl font-bold text-white text-center">${user.name}</h4>
-                            <p class="text-sm text-white/90 text-center">${user.position}</p>
-                        </div>
-                        </div>
-                        <div class="bg-[#910E19] flex justify-between px-6 py-3">
-                        <span class="text-[#FEF9F1] text-3xl">→</span>
-                        <div class="flex gap-3">
-                            ${renderSocial(user)}
-                        </div>
-                        </div>
-                    </div>
-                </div>`;
-        }
+
 
         function renderDivisionContainer(divisionName, members) {
             const heads = members.filter(u => isHead(u.position));
             const others = members.filter(u => !isHead(u.position));
 
             return `
-            <div class="p-6 rounded-2xl md:p-8 flex flex-col items-center mb-6">
+            <div class="flex flex-col items-center p-6 mb-6 rounded-2xl md:p-8">
 
                 ${renderDivisionHeader(divisionName)}
 
                 ${heads.length ? `
-                                                                            <div class="mb-10 flex justify-center w-full">
+                                                                            <div class="flex justify-center w-full mb-10">
                                                                                 ${heads.map(renderMemberCard).join('')}
                                                                             </div>
                                                                             ` : ''}
 
                 ${others.length ? `
-                                                                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                                                            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                                                                                 ${others.map(renderMemberCard).join('')}
                                                                             </div>
                                                                             ` : ''}
@@ -990,7 +1029,7 @@
                                                                                     <div class="w-40 h-40">
                                                                                     <img
                                                                                         src="/img/bagian/logo-divisi/${logoFile}"
-                                                                                        class="w-full h-full object-contain"
+                                                                                        class="object-contain w-full h-full"
                                                                                         alt="Logo ${name}"
                                                                                     />
                                                                                     </div>
@@ -1024,5 +1063,55 @@
                 );
             });
         }
+
+        //  VIDEO PROFILE MODAL (Frontend)
+        function playVideoProfile(videoUrl) {
+            // Buat modal overlay
+            const modalHtml = `
+                <div id="video-modal" class="fixed inset-0 bg-black/90 z-[9999] flex items-center justify-center p-4 animate-fade-in">
+                    <div class="relative max-w-2xl w-full max-h-[80vh]">
+                        <video src="${videoUrl}" autoplay controls class="w-full h-auto shadow-2xl rounded-2xl" style="max-height: 70vh;">
+                            Browser tidak support video.
+                        </video>
+                        <button onclick="closeVideoProfile()" 
+                                class="absolute -top-4 -right-4 w-12 h-12 bg-red-600 hover:bg-red-700 text-white rounded-full flex items-center justify-center text-xl font-bold shadow-lg transition-all duration-200 hover:scale-110 z-[10000]">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <style>
+                    @keyframes fade-in {
+                        from { opacity: 0; }
+                        to { opacity: 1; }
+                    }
+                    #video-modal video::-webkit-media-controls-overlay-enclosure { opacity: 1 !important; }
+                </style>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            
+            // Prevent body scroll
+            document.body.style.overflow = 'hidden';
+            
+            // Close on ESC
+            document.addEventListener('keydown', function escHandler(e) {
+                if (e.key === 'Escape') closeVideoProfile();
+            });
+        }
+
+        function closeVideoProfile() {
+            const modal = document.getElementById('video-modal');
+            if (modal) modal.remove();
+            document.body.style.overflow = '';
+            
+            // Remove ESC listener
+            document.removeEventListener('keydown', arguments.callee);
+        }
+        
+
+       
+
+
     </script>
 @endsection

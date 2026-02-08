@@ -53,6 +53,7 @@ class PengurusService
                 'photo'         => $user->photo,
                 'instagram'     => $user->instagram,
                 'linkedin'      => $user->linkedin,
+                'profile_video' => $user->profile_video,
             ];
         })
         ->sort(function ($a, $b) use ($divisionPriority, $positionPriority) {

@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Division;
 use Yajra\DataTables\DataTables;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 
 class UserRepository
 {
@@ -21,8 +22,24 @@ class UserRepository
             })
             ->addColumn('photo', function ($user) {
                 return $user->photo ? '<div class="img-wrapper img-wrapper-table"><img src=' . asset('storage/' . $user->photo) . ' alt=""></div>'
-                                    : '<div class="img-wrapper img-wrapper-table"><i class="fas fa-image text-white"></i></div>';
+                                    : '<div class="img-wrapper img-wrapper-table"><i class="text-white fas fa-image"></i></div>';
             })
+
+            ->addColumn('profile_video', function ($user) {
+            if ($user->profile_video) {
+                return '<div class="img-wrapper img-wrapper-table">
+                            <img src="' . asset('storage/' . $user->profile_video) . '" 
+                                 alt="GIF Profile" class="rounded gif-thumbnail" 
+                                 style="max-height: 50px; max-width: 60px; object-fit: cover;">
+                            <small class="d-block text-muted">GIF</small>
+                        </div>';
+            }
+            return '<div class="img-wrapper img-wrapper-table">
+                        <i class="text-white fas fa-video" style="font-size: 2rem;"></i>
+                        <small class="d-block text-muted">-</small>
+                    </div>';
+            })
+            
             ->addColumn('name', fn($user) => $user->name)
             ->addColumn('nim', fn($user) => $user->nim)
             ->addColumn('division', function ($user) {
@@ -54,7 +71,7 @@ class UserRepository
             ->addColumn('phone', fn($user) => $user->phone)
             ->addColumn('email', fn($user) => $user->email)
             ->addColumn('role', fn($user) => $user->role->name)
-            ->rawColumns(['action', 'photo', 'status'])
+            ->rawColumns(['action', 'photo', 'status','profile_video'])
             ->make(true);
     }
 
@@ -85,21 +102,39 @@ class UserRepository
         return User::find($id);
     }
 
-    public function save($data)
+    public function save($data, $request = null)
     {
         try {
             $user = new User($data);
             $user->password = bcrypt($data['password']);
             $user->role_id = '2';
-            $user->status='1';
+            $user->status = '1';
+            
             $user->periode = array_map(fn($i) => [
                 'year' => $data['periode_year'][$i],
                 'division_id' => $data['periode_division'][$i] ?? null,
                 'position' => $data['periode_position'][$i] ?? null,
             ], array_keys($data['periode_year']));
 
-            if (isset($data['photo'])) {
-                $user->photo = $data['photo']->store('photo/user', 'public');
+            //  PHOTO
+            if ($request && $request->hasFile('photo')) {
+                $user->photo = $request->file('photo')->store('photo/user', 'public');
+            }
+
+            //  VIDEO → GIF (CREATE - NO DELETE NEEDED)
+            if ($request && $request->hasFile('profile_video')) {
+                $videoPath = $request->file('profile_video')->store('video/user', 'public');
+                $gifFilename = pathinfo($videoPath, PATHINFO_FILENAME) . '.gif';
+                $gifPath = 'video/user/' . $gifFilename;
+                
+                $ffmpegCommand = sprintf(
+                    'ffmpeg -ss 2 -t 3 -i %s -vf "fps=30,scale=320:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -y %s 2>/dev/null',
+                    storage_path('app/public/' . $videoPath),
+                    storage_path('app/public/' . $gifPath)
+                );
+                exec($ffmpegCommand);
+                
+                $user->profile_video = $gifPath; // Simpan GIF path
             }
 
             $user->save();
@@ -110,27 +145,54 @@ class UserRepository
         }
     }
 
-    public function update($id, $data)
+
+
+    public function update($id, $data, $request = null)
     {
         try {
             $user = User::findOrFail($id);
             $user->fill($data);
             $user->status = $data['status'] ?? $user->status;
-            $user->periode = array_map(fn($i) => [
-                'year' => $data['periode_year'][$i],
-                'division_id' => $data['periode_division'][$i] ?? null,
-                'position' => $data['periode_position'][$i] ?? null,
-            ], array_keys($data['periode_year']));
+            
+            if (isset($data['periode_year'])) {
+                $user->periode = array_map(fn($i) => [
+                    'year' => $data['periode_year'][$i],
+                    'division_id' => $data['periode_division'][$i] ?? null,
+                    'position' => $data['periode_position'][$i] ?? null,
+                ], array_keys($data['periode_year']));
+            }
 
-            if (isset($data['password'])) {
+            if (isset($data['password']) && !empty($data['password'])) {
                 $user->password = bcrypt($data['password']);
             }
 
-            if (isset($data['photo'])) {
+            //  PHOTO UPDATE (CHECK $request)
+            if ($request && $request->hasFile('photo')) {
                 if ($user->photo) {
-                    \Storage::delete('public/' . $user->photo);
+                    Storage::disk('public')->delete($user->photo);
                 }
-                $user->photo = $data['photo']->store('photo/user', 'public');
+                $user->photo = $request->file('photo')->store('photo/user', 'public');
+            }
+
+            //  VIDEO UPDATE (CHECK $request)
+            if ($request && $request->hasFile('profile_video')) {
+                // Hapus old files
+                if ($user->profile_video) {
+                    Storage::disk('public')->delete($user->profile_video);
+                }
+                
+                $videoPath = $request->file('profile_video')->store('video/user', 'public');
+                $gifFilename = pathinfo($videoPath, PATHINFO_FILENAME) . '.gif';
+                $gifPath = 'video/user/' . $gifFilename;
+                
+                $ffmpegCommand = sprintf(
+                    'ffmpeg -ss 2 -t 3 -i %s -vf "fps=10,scale=320:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -y %s 2>/dev/null',
+                    storage_path('app/public/' . $videoPath),
+                    storage_path('app/public/' . $gifPath)
+                );
+                exec($ffmpegCommand);
+                
+                $user->profile_video = $gifPath;
             }
 
             $user->save();
@@ -140,6 +202,7 @@ class UserRepository
             throw $t;
         }
     }
+
 
     public function setStatus($ids, $status)
     {
