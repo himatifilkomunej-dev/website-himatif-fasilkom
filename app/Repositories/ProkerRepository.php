@@ -9,7 +9,7 @@ use App\Models\ProkerUser;
 
 class ProkerRepository
 {
-    public function get(int $limit = null, array $condition = [], array $orCondition = [])
+    public function get(int $limit = null, array $condition = [], array $orCondition = [], int $offset = 0)
     {
         return Proker::orderBy('is_registration_open', 'desc')
             ->orderBy('is_timeline_open', 'desc')
@@ -20,6 +20,7 @@ class ProkerRepository
             ->when(count($orCondition) > 0, function ($q) use ($orCondition) {
                 $q->orWhere($orCondition);
             })
+            ->skip($offset)
             ->when(!is_null($limit), function ($q) use ($limit) {
                 $q->limit($limit);
             })->get();

@@ -17,11 +17,11 @@
         <section class="bg-[#FEF9F1] relative px-4 py-16 overflow-hidden md:px-6 md:py-24">
             <!-- Background Patterns -->
             <!-- <div class="absolute top-0 left-0 opacity-20">
-                                                                                                                                                                                                                                                                    <div class="w-64 h-64 rounded-full bg-gradient-to-br from-gray-200 to-gray-300"></div>
-                                                                                                                                                                                                                                                         </div>
-                                                                                                                                                                                                                                                                <div class="absolute bottom-0 right-0 opacity-20">
-                                                                                                                                                                                                                                                                    <div class="w-64 h-64 rounded-full bg-gradient-to-br from-gray-200 to-gray-300"></div>
-                                                                                                                                                                                                                                                                </div> -->
+                                                                                                                                                                                                                                                                                                                                                <div class="w-64 h-64 rounded-full bg-gradient-to-br from-gray-200 to-gray-300"></div>
+                                                                                                                                                                                                                                                                                                                                     </div>
+                                                                                                                                                                                                                                                                                                                                            <div class="absolute bottom-0 right-0 opacity-20">
+                                                                                                                                                                                                                                                                                                                                                <div class="w-64 h-64 rounded-full bg-gradient-to-br from-gray-200 to-gray-300"></div>
+                                                                                                                                                                                                                                                                                                                                            </div> -->
 
             <div class="relative z-10 flex justify-center container-responsive">
                 <div class="flex flex-col items-center">
@@ -78,12 +78,8 @@
                         <option value="2023" class="text-white bg-[#02314A]">
                             HIMATIF PERIODE 2023 / 2024
                         </option>
-                        <option value="2022" class="text-white bg-[#02314A]">
-                            HIMATIF PERIODE 2022 / 2023
-                        </option>
-                        <option value="2021" class="text-white bg-[#02314A]">
-                            HIMATIF PERIODE 2021 / 2022
-                        </option>
+                        {{-- 
+                         --}}
                     </select>
                 </div>
 
@@ -279,6 +275,15 @@
         /* Rounded utilities */
         .rounded-2xl {
             border-radius: 1rem;
+        }
+
+        .rounded-br-2xl {
+            border-bottom-right-radius: 1rem;
+        }
+
+        .rounded-b-2xl {
+            border-bottom-left-radius: 1rem;
+            border-bottom-right-radius: 1rem;
         }
 
         .rounded-xl {
@@ -599,6 +604,33 @@
             margin: 0 auto !important;
             flex-shrink: 0 !important;
             flex-grow: 0 !important;
+            border-radius: 0 !important;
+            overflow: hidden !important;
+        }
+
+        /* Hanya rounded di kanan atas */
+        .member-card-red-section,
+        .member-card-red-section img,
+        .member-card-red-section video,
+        .profile-image,
+        .profile-video {
+            border-top-right-radius: 1rem !important;
+            border-top-left-radius: 0 !important;
+            border-bottom-left-radius: 0 !important;
+            border-bottom-right-radius: 0 !important;
+        }
+
+        /* Clip-path untuk potong sudut kiri atas */
+        .member-card-red-section {
+            clip-path: polygon(20px 0, 100% 0, 100% 100%, 0 100%, 0 20px) !important;
+        }
+
+        /* Bagian merah bawah rounded di kiri bawah dan kanan bawah */
+        .member-card-fixed>div:last-child {
+            border-bottom-left-radius: 1rem !important;
+            border-bottom-right-radius: 1rem !important;
+            border-top-left-radius: 0 !important;
+            border-top-right-radius: 0 !important;
         }
 
         /* Fixed red section height with balanced spacing */
@@ -610,6 +642,7 @@
             align-items: center !important;
             min-height: 11rem !important;
             padding: 0 !important;
+            clip-path: polygon(20px 0, 100% 0, 100% 100%, 0 100%, 0 20px) !important;
         }
 
         /* Fixed cream section height */
@@ -743,22 +776,20 @@
 
         /* FOTO - Hilang setelah 1s */
         .profile-image {
-            transition: all 0.5s cubic-bezier(0.4,0,0.2,1) !important;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
         }
 
 
         /* VIDEO - Muncul + Play setelah 0.7s */
         .profile-video {
             opacity: 0 !important;
-            transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1) 0.7s !important;
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.7s !important;
             z-index: 30 !important;
         }
 
         .video-card:hover .profile-video {
             opacity: 1 !important;
         }
-
-
     </style>
 @endsection
 
@@ -942,22 +973,23 @@
             return html;
         }
 
-function renderMemberCard(user) {
-    let mediaContent = '';
-    if (user.profile_video) {
-        //  GIF VERSION - AUTOPLAY FOREVER NO CLICK!
-        mediaContent = `        
-        <!--  GIF (z-30 - LOOP SELAMANYA!) -->
-        <img class="absolute inset-0 w-full h-full object-cover z-[30] profile-video" 
-             src="/storage/${user.profile_video.replace(/\\.(mp4|mov|avi)$/i, '.gif')}" 
-             alt="GIF ${user.name}" loading="lazy">
+        function renderMemberCard(user) {
+            let mediaContent = '';
+            if (user.profile_video) {
+                //  VIDEO VERSION - AUTOPLAY FOREVER NO CLICK!
+                mediaContent = `        
+        <!--  VIDEO (z-30 - LOOP SELAMANYA!) -->
+        <video class="absolute inset-0 w-full h-full object-cover z-[30] profile-video" 
+               autoplay loop muted playsinline preload="metadata">
+            <source src="/storage/${user.profile_video}" type="video/mp4">
+        </video>
         `;
-    }
+            }
 
-    return `
+            return `
     <div class="transition-opacity duration-500 ease-out opacity-0 member-card-animate video-card" data-video="${user.profile_video || ''}">
-        <div class="relative overflow-hidden shadow-lg rounded-2xl member-card-fixed group">
-            <div class="relative flex flex-col justify-end member-card-red-section">
+        <div class="relative overflow-hidden shadow-lg member-card-fixed group">
+            <div class="relative flex flex-col justify-end member-card-red-section" style="clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 0px), 0 calc(100% - 0px), 0 20px);">
                 
                 ${mediaContent}
                 
@@ -973,13 +1005,13 @@ function renderMemberCard(user) {
                 </div>
             </div>
             
-            <div class="bg-[#910E19] flex justify-between px-6 py-3">
+            <div class="bg-[#910E19] flex justify-between px-6 py-3 rounded-b-2xl">
                 <span class="text-[#FEF9F1] text-3xl">→</span>
                 <div class="flex gap-3">${renderSocial(user)}</div>
             </div>
         </div>
     </div>`;
-}
+        }
 
 
 
@@ -994,16 +1026,16 @@ function renderMemberCard(user) {
                 ${renderDivisionHeader(divisionName)}
 
                 ${heads.length ? `
-                                                                            <div class="flex justify-center w-full mb-10">
-                                                                                ${heads.map(renderMemberCard).join('')}
-                                                                            </div>
-                                                                            ` : ''}
+                                                                                                                                                        <div class="flex justify-center w-full mb-10">
+                                                                                                                                                            ${heads.map(renderMemberCard).join('')}
+                                                                                                                                                        </div>
+                                                                                                                                                        ` : ''}
 
                 ${others.length ? `
-                                                                            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                                                                                ${others.map(renderMemberCard).join('')}
-                                                                            </div>
-                                                                            ` : ''}
+                                                                                                                                                        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                                                                                                                                                            ${others.map(renderMemberCard).join('')}
+                                                                                                                                                        </div>
+                                                                                                                                                        ` : ''}
 
             </div>`;
         }
@@ -1026,14 +1058,14 @@ function renderMemberCard(user) {
                 ${
                     logoFile
                     ? `
-                                                                                    <div class="w-40 h-40">
-                                                                                    <img
-                                                                                        src="/img/bagian/logo-divisi/${logoFile}"
-                                                                                        class="object-contain w-full h-full"
-                                                                                        alt="Logo ${name}"
-                                                                                    />
-                                                                                    </div>
-                                                                                `
+                                                                                                                                                                <div class="w-40 h-40">
+                                                                                                                                                                <img
+                                                                                                                                                                    src="/img/bagian/logo-divisi/${logoFile}"
+                                                                                                                                                                    class="object-contain w-full h-full"
+                                                                                                                                                                    alt="Logo ${name}"
+                                                                                                                                                                />
+                                                                                                                                                                </div>
+                                                                                                                                                            `
                     : ''
                 }
                 <${titleTag}
@@ -1088,12 +1120,12 @@ function renderMemberCard(user) {
                     #video-modal video::-webkit-media-controls-overlay-enclosure { opacity: 1 !important; }
                 </style>
             `;
-            
+
             document.body.insertAdjacentHTML('beforeend', modalHtml);
-            
+
             // Prevent body scroll
             document.body.style.overflow = 'hidden';
-            
+
             // Close on ESC
             document.addEventListener('keydown', function escHandler(e) {
                 if (e.key === 'Escape') closeVideoProfile();
@@ -1104,14 +1136,9 @@ function renderMemberCard(user) {
             const modal = document.getElementById('video-modal');
             if (modal) modal.remove();
             document.body.style.overflow = '';
-            
+
             // Remove ESC listener
             document.removeEventListener('keydown', arguments.callee);
         }
-        
-
-       
-
-
     </script>
 @endsection

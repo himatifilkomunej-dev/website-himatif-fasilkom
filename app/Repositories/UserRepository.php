@@ -9,6 +9,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Http\UploadedFile;
 
 
 class UserRepository
@@ -16,7 +17,7 @@ class UserRepository
     public function getDatatable()
     {
         // Eager loading
-        $users = User::with(['role', 'periode.division'])->get();
+        $users = User::with(['role'])->get();
 
         return DataTables::of($users)
             ->addColumn('action', function ($user) {
@@ -45,11 +46,10 @@ class UserRepository
                 if ($user->profile_video) {
                     return '
                         <div class="img-wrapper img-wrapper-table">
-                            <img src="' . asset('storage/' . str_replace(['.mp4', '.mov'], '.gif', $user->profile_video)) . '"
-                                 alt="GIF Profile"
-                                 class="rounded gif-thumbnail"
-                                 style="max-height:50px;max-width:60px;object-fit:cover;">
-                            <small class="d-block text-muted">GIF</small>
+                            <video width="60" height="50" style="object-fit:cover;border-radius:4px;">
+                                <source src="' . asset('storage/' . $user->profile_video) . '" type="video/mp4">
+                            </video>
+                            <small class="d-block text-muted">Video</small>
                         </div>
                     ';
                 }
@@ -130,6 +130,73 @@ class UserRepository
         return User::find($id);
     }
 
+    /**
+     * Compress image using GD library
+     */
+    private function compressImage(UploadedFile $file, $maxWidth = 1200, $quality = 85)
+    {
+        // Check if GD extension is available
+        if (!extension_loaded('gd')) {
+            Log::warning('GD extension not available, skipping image compression');
+            return null;
+        }
+        
+        $tempPath = $file->getRealPath();
+        $extension = strtolower($file->getClientOriginalExtension());
+        
+        // Load image based on type
+        $image = match($extension) {
+            'jpg', 'jpeg' => imagecreatefromjpeg($tempPath),
+            'png' => imagecreatefrompng($tempPath),
+            'gif' => imagecreatefromgif($tempPath),
+            default => null
+        };
+        
+        if (!$image) return null;
+        
+        // Get original dimensions
+        $width = imagesx($image);
+        $height = imagesy($image);
+        
+        // Calculate new dimensions
+        if ($width > $maxWidth) {
+            $newWidth = $maxWidth;
+            $newHeight = (int)($height * ($maxWidth / $width));
+        } else {
+            $newWidth = $width;
+            $newHeight = $height;
+        }
+        
+        // Create new image
+        $newImage = imagecreatetruecolor($newWidth, $newHeight);
+        
+        // Preserve transparency for PNG and GIF
+        if ($extension === 'png' || $extension === 'gif') {
+            imagealphablending($newImage, false);
+            imagesavealpha($newImage, true);
+            $transparent = imagecolorallocatealpha($newImage, 255, 255, 255, 127);
+            imagefilledrectangle($newImage, 0, 0, $newWidth, $newHeight, $transparent);
+        }
+        
+        // Resize
+        imagecopyresampled($newImage, $image, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+        
+        // Save compressed image
+        $tempCompressed = tempnam(sys_get_temp_dir(), 'img_');
+        match($extension) {
+            'jpg', 'jpeg' => imagejpeg($newImage, $tempCompressed, $quality),
+            'png' => imagepng($newImage, $tempCompressed, (int)((100 - $quality) / 11.11)),
+            'gif' => imagegif($newImage, $tempCompressed),
+            default => null
+        };
+        
+        // Clean up
+        imagedestroy($image);
+        imagedestroy($newImage);
+        
+        return $tempCompressed;
+    }
+
 
     public function save($data, $request = null)
     {
@@ -147,34 +214,24 @@ class UserRepository
             ], array_keys($data['periode_year']));
 
             if ($request && $request->hasFile('photo')) {
-                $user->photo = $request->file('photo')->store('photo/user', 'public');
+                $photoFile = $request->file('photo');
+                
+                // Compress image
+                $compressedPath = $this->compressImage($photoFile, 1200, 85);
+                
+                if ($compressedPath) {
+                    $filename = 'photo/user/' . uniqid() . '_' . time() . '.jpg';
+                    Storage::disk('public')->put($filename, file_get_contents($compressedPath));
+@unlink($compressedPath);
+                    $user->photo = $filename;
+                } else {
+                    // Fallback if compression fails
+                    $user->photo = $photoFile->store('photo/user', 'public');
+                }
             }
 
             if ($request && $request->hasFile('profile_video')) {
-                $videoPath   = $request->file('profile_video')->store('video/user', 'public');
-                $gifFilename = pathinfo($videoPath, PATHINFO_FILENAME) . '.gif';
-                $gifPath     = 'video/user/' . $gifFilename;
-
-                $result = Process::run([
-                    'ffmpeg',
-                    '-i', storage_path('app/public/' . $videoPath),
-                    '-t', '6',
-                    '-vf', 'fps=30,scale=320:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse',
-                    '-y', storage_path('app/public/' . $gifPath),
-                ]);
-
-                $gifFullPath = storage_path('app/public/' . $gifPath);
-
-                if (!$result->successful() || !file_exists($gifFullPath)) {
-                    throw new \Exception('FFmpeg gagal generate GIF');
-                }
-
-                if (filesize($gifFullPath) > 10 * 1024 * 1024) {
-                    unlink($gifFullPath);
-                    throw new \Exception('GIF terlalu besar (>10MB)');
-                }
-
-                $user->profile_video = $gifPath;
+                $user->profile_video = $request->file('profile_video')->store('video/user', 'public');
             }
 
             $user->save();
@@ -217,7 +274,20 @@ class UserRepository
                     Storage::disk('public')->delete($user->photo);
                 }
 
-                $user->photo = $request->file('photo')->store('photo/user', 'public');
+                $photoFile = $request->file('photo');
+                
+                // Compress image
+                $compressedPath = $this->compressImage($photoFile, 1200, 85);
+                
+                if ($compressedPath) {
+                    $filename = 'photo/user/' . uniqid() . '_' . time() . '.jpg';
+                    Storage::disk('public')->put($filename, file_get_contents($compressedPath));
+@unlink($compressedPath);
+                    $user->photo = $filename;
+                } else {
+                    // Fallback if compression fails
+                    $user->photo = $photoFile->store('photo/user', 'public');
+                }
             }
 
             if ($request && $request->hasFile('profile_video')) {
@@ -225,30 +295,7 @@ class UserRepository
                     Storage::disk('public')->delete($user->profile_video);
                 }
 
-                $videoPath   = $request->file('profile_video')->store('video/user', 'public');
-                $gifFilename = pathinfo($videoPath, PATHINFO_FILENAME) . '.gif';
-                $gifPath     = 'video/user/' . $gifFilename;
-
-                $result = Process::run([
-                    'ffmpeg',
-                    '-i', storage_path('app/public/' . $videoPath),
-                    '-t', '6',
-                    '-vf', 'fps=30,scale=320:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse',
-                    '-y', storage_path('app/public/' . $gifPath),
-                ]);
-
-                $gifFullPath = storage_path('app/public/' . $gifPath);
-
-                if (!$result->successful() || !file_exists($gifFullPath)) {
-                    throw new \Exception('FFmpeg gagal generate GIF');
-                }
-
-                if (filesize($gifFullPath) > 10 * 1024 * 1024) {
-                    unlink($gifFullPath);
-                    throw new \Exception('GIF terlalu besar (>10MB)');
-                }
-
-                $user->profile_video = $gifPath;
+                $user->profile_video = $request->file('profile_video')->store('video/user', 'public');
             }
 
             $user->save();
