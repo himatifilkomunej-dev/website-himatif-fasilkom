@@ -32,7 +32,7 @@
         </div>
     </div>
 
-    <div class="card mb-2">
+    <div class="mb-2 card">
         <div class="card-body">
             <div class="row align-items-center gutters-xs">
                 <div class="col-lg">
@@ -60,7 +60,7 @@
                 </div>
                 <div class="col-md-auto">
                     <a href="{{ route('dashboard.admin.users.create') }}" class="btn btn-block btn-sm btn-primary">
-                        <i class="fas fa-plus mr-2"></i> Tambah Data
+                        <i class="mr-2 fas fa-plus"></i> Tambah Data
                     </a>
                 </div>
             </div>
@@ -69,7 +69,7 @@
 
     <div class="card">
         <div class="card-body">
-            <div class="row align-items-center border-bottom pb-3 mb-3">
+            <div class="pb-3 mb-3 row align-items-center border-bottom">
                 <div class="col-md">Export Data</div>
                 {{-- <div class="col-md-auto">
                     <a href="{{ route('dashboard.admin.keanggotaan.export') }}" class="btn btn-outline-success">Export Excell</a>
@@ -82,6 +82,7 @@
                             <th class="no-export"></th>
                             <th class="no-sort no-export">Aksi</th>
                             <th class="no-sort no-export">Foto</th>
+                            <th class="no-sort no-export">Video</th>
                             <th>Nama</th>
                             <th>Nim</th>
                             <th>Division</th>
@@ -133,7 +134,7 @@
                         <'row no-gutters justify-content-center'<'col-md'i><'col-md-auto'p>>`,
                 buttons: [{
                         extend: 'colvis',
-                        text: '<i class="fas fa-table mr-2"></i>Pilih Kolom',
+                        text: '<i class="mr-2 fas fa-table"></i>Pilih Kolom',
                         className: 'btn-primary',
                         prefixButtons: [{
                             extend: 'colvisRestore',
@@ -142,7 +143,7 @@
                     },
                     {
                         extend: 'excel',
-                        text: '<i class="fas fa-file-excel mr-2"></i>Export Excel',
+                        text: '<i class="mr-2 fas fa-file-excel"></i>Export Excel',
                         className: 'btn-success',
                         title: 'Data Keanggotaan Himatif',
                         exportOptions: {
@@ -203,6 +204,12 @@
                         data: 'photo',
                         name: 'photo',
                         "searchable": false
+                    },
+                    {
+                        data: 'profile_video',
+                        name: 'profile_video',
+                        "searchable": false,
+                        orderable: false
                     },
                     {
                         data: 'name',

@@ -62,9 +62,11 @@ class UserController extends Controller
                 'nim' => 'required',
                 'email' => 'required|string|email|unique:users',
                 'password' => 'required|min:6',
+                'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',           
+                'profile_video' => 'nullable|file|mimes:mp4,mov|max:51200',  
             ])->validate();
 
-            $this->userRepository->save($request->all());
+            $this->userRepository->save($request->all(), $request);
             return redirect()
                 ->route('dashboard.admin.users.index')
                 ->with([
@@ -73,7 +75,7 @@ class UserController extends Controller
                 ]);
         } catch (\Exception $e) {
             return redirect()
-                ->back() // ✅ Benar
+                ->back() 
                 ->with([
                     'type' => 'danger',
                     'message' => 'Tambah Data User Gagal, Terjadi kesalahan pada sistem.' . $e->getMessage(),
@@ -130,6 +132,8 @@ class UserController extends Controller
             'periode_year' => 'required|array',
             'periode_division' => 'required|array',
             'periode_position' => 'required|array',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',          
+            'profile_video' => 'nullable|file|mimes:mp4,mov|max:51200',  
         ])->validate();
 
         try {
@@ -169,8 +173,7 @@ class UserController extends Controller
             );
 
             // Update user
-            $this->userRepository->update($id, $data);
-
+            $this->userRepository->update($id, $data, $request); 
             return redirect()
                 ->route('dashboard.admin.users.index')
                 ->with([
