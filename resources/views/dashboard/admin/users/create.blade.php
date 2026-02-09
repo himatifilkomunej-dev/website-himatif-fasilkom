@@ -10,13 +10,13 @@
 
 @section('content') {{-- content --}}
 
-    <div class="row gutters-xs align-items-center justify-content-end my-4">
+    <div class="my-4 row gutters-xs align-items-center justify-content-end">
         <div class="col-lg">
             <h4>Tambah Data Pengurus</h4>
         </div>
         <div class="col col-md-auto">
             <a href="{{ route('dashboard.admin.users.index') }}" class="btn btn-outline-secondary">
-                <i class="fas fa-arrow-left mr-1"></i> Semua Data
+                <i class="mr-1 fas fa-arrow-left"></i> Semua Data
             </a>
         </div>
     </div>
@@ -25,11 +25,11 @@
     <form action="{{ route('dashboard.admin.users.store') }}" enctype="multipart/form-data" method="POST">
         @csrf
         <div class="row">
-
             <div class="col-lg-5">
                 <div class="card">
                     <div class="card-body d-flex flex-column align-items-center">
-                        <div class="img-wrapper img-wrapper-upload rounded-circle bg-secondary w-10rem h-10rem my-3">
+                        {{-- FOTO --}}
+                        <div class="my-3 img-wrapper img-wrapper-upload rounded-circle bg-secondary w-10rem h-10rem">
                             <img id="img-anggota-1" src="" alt="">
                         </div>
                         @component('dashboard._components._form-group.input-img')
@@ -37,11 +37,23 @@
                             @slot('inputPreviewIdentity', 'img-anggota-1')
                             @slot('inputName', 'photo')
                             @slot('inputId', 'input-photo')
-                            {{-- @slot('inputIsRequired', true) --}}
                         @endcomponent
-                    </div>
-                </div>
-            </div>
+
+                        {{-- VIDEO --}}
+                        <div class="my-3 rounded img-wrapper img-wrapper-upload w-10rem h-10rem bg-dark d-none" id="img-video-1">
+                            <video width="100%" height="100%" class="rounded" controls preload="metadata" muted></video>
+                        </div>
+                        @component('dashboard._components._form-group.input-video')
+                            @slot('inputLabel', 'Video Profile')
+                            @slot('inputPreviewIdentity', 'img-video-1')
+                            @slot('inputName', 'profile_video')
+                            @slot('inputId', 'input-video')
+                        @endcomponent
+                    </div> {{-- TUTUP card-body --}}
+                </div> {{-- TUTUP card --}}
+            </div> {{-- TUTUP col-lg-5 --}}
+
+
 
             <div class="col-lg">
                 <div class="card">
@@ -184,6 +196,22 @@
         <script>
         "use strict";
 
+
+        function openVideoFile(event, previewId) {
+            const file = event.target.files[0];
+            const preview = $(previewId);
+            const video = preview.find('video')[0];
+            
+            if (file && video) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    video.src = e.target.result;
+                    preview.removeClass('d-none');
+                    $(event.target).next('.custom-file-label').text(file.name);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
         /**
          * Init year picker
          */
@@ -208,7 +236,7 @@
                     <tr>
                         <td style="width:70%">
 
-                            <div class="form-group mb-3">
+                            <div class="mb-3 form-group">
                                 <label>Tahun Periode</label>
                                 <div class="input-group">
                                     <input type="text"
