@@ -74,10 +74,17 @@ class HomepageController extends Controller
         return view('frontpage.modules.pengurus', compact(['header', 'divisions', 'pengurus']));
     }
 
-    public function getProker()
+    public function getProker(Request $request)
     {
         $header = (array) json_decode($this->pageContentRepository->findBySlug('header-proker')->data);
-        $prokers = $this->prokerRepository->get(null, [['status', '1']]);
+        
+        // Pagination logic - 8 items per page
+        $limit = $request->limit ?? 8;
+        $perPage = 8;
+        $offset = max(0, $limit - $perPage);
+        
+        $prokers = $this->prokerRepository->get($perPage, [['status', '1']], [], $offset);
+        
         return view('frontpage.modules.proker', compact(['header', 'prokers']));
     }
 

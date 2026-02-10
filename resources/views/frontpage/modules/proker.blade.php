@@ -16,11 +16,11 @@
         <section class="bg-[#FEF9F1] relative px-4 py-16 overflow-hidden md:px-6 md:py-24">
             <!-- Background Patterns -->
             <!-- <div class="absolute top-0 left-0 opacity-20">
-                                                        <div class="w-64 h-64 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full"></div>
-                                                    </div>
-                                                    <div class="absolute bottom-0 right-0 opacity-20">
-                                                        <div class="w-64 h-64 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full"></div>
-                                                    </div> -->
+                                                                <div class="w-64 h-64 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full"></div>
+                                                            </div>
+                                                            <div class="absolute bottom-0 right-0 opacity-20">
+                                                                <div class="w-64 h-64 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full"></div>
+                                                            </div> -->
 
             <div class="container relative z-10 mx-auto flex justify-center">
                 <div class="flex flex-col items-center">
@@ -239,6 +239,63 @@
 
                         </a>
                     @endforeach
+                </div>
+
+                <!-- Pagination Section -->
+                <div class="pagination-section">
+                    <div class="pagination-wrapper opacity-0 translate-y-8 transition-all duration-1000 ease-out"
+                        data-animate>
+                        @php
+                            $limit = Request::get('limit', 8);
+                            $currentPage = (int) ceil($limit / 8);
+
+                            // Hitung total data dinamis dari database
+                            $totalProkers = \App\Models\Proker::where('status', '1')->count();
+                            $totalPages = ceil($totalProkers / 8);
+
+                            if ($totalPages < 1) {
+                                $totalPages = 1;
+                            }
+
+                            // Cek apakah masih ada halaman selanjutnya
+                            $hasMore = $prokers->count() >= 8 && $currentPage < $totalPages;
+                        @endphp
+
+                        <!-- First Page Button -->
+                        @if ($currentPage > 1)
+                            <a href="{{ route('frontpage.proker', ['limit' => 8]) }}" class="pagination-btn">
+                                «
+                            </a>
+                        @endif
+
+                        <!-- Previous Page Button -->
+                        @if ($currentPage > 1)
+                            <a href="{{ route('frontpage.proker', ['limit' => ($currentPage - 1) * 8]) }}"
+                                class="pagination-btn">
+                                ‹
+                            </a>
+                        @endif
+
+                        <!-- Page Info -->
+                        <div class="page-info">
+                            {{ $currentPage }}/{{ $totalPages }}
+                        </div>
+
+                        <!-- Next Page Button -->
+                        @if ($hasMore)
+                            <a href="{{ route('frontpage.proker', ['limit' => ($currentPage + 1) * 8]) }}"
+                                class="pagination-btn">
+                                ›
+                            </a>
+                        @endif
+
+                        <!-- Last Page Button -->
+                        @if ($currentPage < $totalPages && $totalPages > 2)
+                            <a href="{{ route('frontpage.proker', ['limit' => $totalPages * 8]) }}" class="pagination-btn">
+                                »
+                            </a>
+                        @endif
+                    </div>
                 </div>
             </div>
         </section>
@@ -613,6 +670,81 @@
         /* Custom font-weight for PROGRAM KERJA title */
         .proker-title {
             font-weight: 700;
+        }
+
+        /* Pagination Section */
+        .pagination-section {
+            text-align: center;
+            padding: 60px 0 20px 0;
+            background-color: #02314A;
+        }
+
+        .pagination-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .pagination-btn {
+            background: #910E19;
+            border: none;
+            color: #FEF9F1;
+            padding: 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            font-size: 2.1rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .pagination-btn:hover {
+            background: rgba(145, 14, 25, 0.8);
+            color: #FEF9F1;
+        }
+
+        .pagination-btn:active {
+            transform: scale(0.95);
+        }
+
+        .page-info {
+            color: #FEF9F1;
+            font-weight: 700;
+            font-size: 1rem;
+            text-align: center;
+            background: #910E19;
+            height: 40px;
+            min-width: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+        }
+
+        /* Responsive pagination */
+        @media (max-width: 768px) {
+            .pagination-wrapper {
+                gap: 6px;
+            }
+
+            .pagination-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 1.8rem;
+            }
+
+            .page-info {
+                height: 36px;
+                min-width: 50px;
+                font-size: 0.9rem;
+            }
         }
     </style>
 @endsection
