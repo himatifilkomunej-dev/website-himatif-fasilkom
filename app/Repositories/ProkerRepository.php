@@ -20,9 +20,8 @@ class ProkerRepository
             ->when(count($orCondition) > 0, function ($q) use ($orCondition) {
                 $q->orWhere($orCondition);
             })
-            ->skip($offset)
-            ->when(!is_null($limit), function ($q) use ($limit) {
-                $q->limit($limit);
+            ->when(!is_null($limit), function ($q) use ($limit, $offset) {
+                $q->limit($limit)->skip($offset);
             })->get();
     }
 
