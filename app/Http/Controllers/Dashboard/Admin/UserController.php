@@ -63,7 +63,7 @@ class UserController extends Controller
                 'email' => 'required|string|email|unique:users',
                 'password' => 'required|min:6',
                 'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',           
-                'profile_video' => 'nullable|file|mimes:mp4,mov|max:51200',  
+                'profile_video' => 'nullable|file|mimes:mp4,mov|max:20480',  // 20MB max
             ])->validate();
 
             $this->userRepository->save($request->all(), $request);
@@ -133,7 +133,7 @@ class UserController extends Controller
             'periode_division' => 'required|array',
             'periode_position' => 'required|array',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',          
-            'profile_video' => 'nullable|file|mimes:mp4,mov|max:51200',  
+            'profile_video' => 'nullable|file|mimes:mp4,mov|max:20480',  // 20MB max
         ])->validate();
 
         try {
