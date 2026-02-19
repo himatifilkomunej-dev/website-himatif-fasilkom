@@ -15,6 +15,7 @@
                     <a id="pengurus" href="/pengurus" class="nav-item nav-link">Divisi & Pengurus</a>
                     <a id="proker" href="/proker" class="nav-item nav-link">Proker</a>
                     <a id="berita" href="/berita" class="nav-item nav-link">Berita</a>
+                    <a id="ithings" href="/ithings" class="nav-item nav-link">Produk kami</a>
                     <div class="dropdown-wrapper">
                         <a id="lainnya" class="nav-item nav-link dropdown-toggle">Lainnya ▾</a>
                         <ul class="dropdown-menu">
@@ -58,6 +59,9 @@
                 <a id="berita-mobile"
                     class="nav-item text-white px-6 py-3 rounded-full text-center font-medium hover:bg-[#333333] transition-all duration-300"
                     href="/berita">Berita</a>
+                <a id="ithings-mobile"
+                    class="nav-item text-white px-6 py-3 rounded-full text-center font-medium hover:bg-[#333333] transition-all duration-300"
+                    href="/ithings">Produk kami</a>
 
                 <!-- Dropdown Mobile -->
                 <div>
@@ -317,6 +321,9 @@
             } else if (currentPath.includes('/berita')) {
                 desktopActive = 'berita';
                 mobileActive = ['berita-mobile'];
+            } else if (currentPath.includes('/ithings')) {
+                desktopActive = 'ithings';
+                mobileActive = ['ithings-mobile'];
             } else if (currentPath.includes('/nim-checker')) {
                 desktopActive = 'lainnya';
                 mobileActive = ['nim-checker-mobile'];
