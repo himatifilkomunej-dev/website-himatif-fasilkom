@@ -17,11 +17,11 @@
         <section class="bg-[#FEF9F1] relative px-4 py-16 overflow-hidden md:px-6 md:py-24">
             <!-- Background Patterns -->
             <!-- <div class="absolute top-0 left-0 opacity-20">
-                                                                                                                                                                                                                                                                                                                                                <div class="w-64 h-64 rounded-full bg-gradient-to-br from-gray-200 to-gray-300"></div>
-                                                                                                                                                                                                                                                                                                                                     </div>
-                                                                                                                                                                                                                                                                                                                                            <div class="absolute bottom-0 right-0 opacity-20">
-                                                                                                                                                                                                                                                                                                                                                <div class="w-64 h-64 rounded-full bg-gradient-to-br from-gray-200 to-gray-300"></div>
-                                                                                                                                                                                                                                                                                                                                            </div> -->
+                                                                                                                                                                                                                                                                                                                                                                <div class="w-64 h-64 rounded-full bg-gradient-to-br from-gray-200 to-gray-300"></div>
+                                                                                                                                                                                                                                                                                                                                                     </div>
+                                                                                                                                                                                                                                                                                                                                                            <div class="absolute bottom-0 right-0 opacity-20">
+                                                                                                                                                                                                                                                                                                                                                                <div class="w-64 h-64 rounded-full bg-gradient-to-br from-gray-200 to-gray-300"></div>
+                                                                                                                                                                                                                                                                                                                                                            </div> -->
 
             <div class="relative z-10 flex justify-center container-responsive">
                 <div class="flex flex-col items-center">
@@ -608,7 +608,6 @@
             overflow: hidden !important;
         }
 
-        /* Hanya rounded di kanan atas */
         .member-card-red-section,
         .member-card-red-section img,
         .member-card-red-section video,
@@ -620,12 +619,10 @@
             border-bottom-right-radius: 0 !important;
         }
 
-        /* Clip-path untuk potong sudut kiri atas */
         .member-card-red-section {
             clip-path: polygon(20px 0, 100% 0, 100% 100%, 0 100%, 0 20px) !important;
         }
 
-        /* Bagian merah bawah rounded di kiri bawah dan kanan bawah */
         .member-card-fixed>div:last-child {
             border-bottom-left-radius: 1rem !important;
             border-bottom-right-radius: 1rem !important;
@@ -774,21 +771,21 @@
         }
 
 
-        /* FOTO - Hilang setelah 1s */
+        /* FOTO - Always visible by default */
         .profile-image {
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
         }
 
 
-        /* VIDEO - Muncul + Play setelah 0.7s */
+        /* VIDEO - Initially hidden, controlled by JavaScript */
         .profile-video {
-            opacity: 0 !important;
-            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.7s !important;
-            z-index: 30 !important;
+            opacity: 0;
+            transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 30;
         }
 
-        .video-card:hover .profile-video {
-            opacity: 1 !important;
+        .profile-video.show-video {
+            opacity: 1;
         }
     </style>
 @endsection
@@ -919,7 +916,49 @@
                 cards.forEach((card) => {
                     card.style.opacity = '1';
                 });
+
+                // Setup video hover controls
+                setupVideoHoverControls();
             }, 150);
+        }
+
+        function setupVideoHoverControls() {
+            const videoCards = document.querySelectorAll('.video-card');
+
+            videoCards.forEach(card => {
+                const videoSrc = card.dataset.video;
+                if (!videoSrc || videoSrc === '') return;
+
+                const video = card.querySelector('.profile-video');
+                if (!video) return;
+
+                let videoCompleted = false;
+
+                // Listen for video end
+                video.addEventListener('ended', () => {
+                    videoCompleted = true;
+                    video.classList.remove('show-video');
+                });
+
+                // Mouse enter - restart and play
+                card.addEventListener('mouseenter', () => {
+                    if (videoCompleted) {
+                        // Don't restart if video already completed
+                        return;
+                    }
+                    video.currentTime = 0;
+                    video.classList.add('show-video');
+                    video.play().catch(err => console.log('Video play error:', err));
+                });
+
+                // Mouse leave - pause, hide, and reset completed flag
+                card.addEventListener('mouseleave', () => {
+                    video.pause();
+                    video.classList.remove('show-video');
+                    // Reset flag so video can be played again on next hover
+                    videoCompleted = false;
+                });
+            });
         }
 
 
@@ -976,11 +1015,11 @@
         function renderMemberCard(user) {
             let mediaContent = '';
             if (user.profile_video) {
-                //  VIDEO VERSION - AUTOPLAY FOREVER NO CLICK!
+                //  VIDEO VERSION - RESTART ON HOVER
                 mediaContent = `        
-        <!--  VIDEO (z-30 - LOOP SELAMANYA!) -->
+        <!--  VIDEO (z-30) -->
         <video class="absolute inset-0 w-full h-full object-cover z-[30] profile-video" 
-               autoplay loop muted playsinline preload="metadata">
+               muted playsinline preload="metadata">
             <source src="/storage/${user.profile_video}" type="video/mp4">
         </video>
         `;
@@ -1026,16 +1065,16 @@
                 ${renderDivisionHeader(divisionName)}
 
                 ${heads.length ? `
-                                                                                                                                                        <div class="flex justify-center w-full mb-10">
-                                                                                                                                                            ${heads.map(renderMemberCard).join('')}
-                                                                                                                                                        </div>
-                                                                                                                                                        ` : ''}
+                                                                                                                                                                        <div class="flex justify-center w-full mb-10">
+                                                                                                                                                                            ${heads.map(renderMemberCard).join('')}
+                                                                                                                                                                        </div>
+                                                                                                                                                                        ` : ''}
 
                 ${others.length ? `
-                                                                                                                                                        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                                                                                                                                                            ${others.map(renderMemberCard).join('')}
-                                                                                                                                                        </div>
-                                                                                                                                                        ` : ''}
+                                                                                                                                                                        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                                                                                                                                                                            ${others.map(renderMemberCard).join('')}
+                                                                                                                                                                        </div>
+                                                                                                                                                                        ` : ''}
 
             </div>`;
         }
@@ -1058,14 +1097,14 @@
                 ${
                     logoFile
                     ? `
-                                                                                                                                                                <div class="w-40 h-40">
-                                                                                                                                                                <img
-                                                                                                                                                                    src="/img/bagian/logo-divisi/${logoFile}"
-                                                                                                                                                                    class="object-contain w-full h-full"
-                                                                                                                                                                    alt="Logo ${name}"
-                                                                                                                                                                />
-                                                                                                                                                                </div>
-                                                                                                                                                            `
+                                                                                                                                                                                <div class="w-40 h-40">
+                                                                                                                                                                                <img
+                                                                                                                                                                                    src="/img/bagian/logo-divisi/${logoFile}"
+                                                                                                                                                                                    class="object-contain w-full h-full"
+                                                                                                                                                                                    alt="Logo ${name}"
+                                                                                                                                                                                />
+                                                                                                                                                                                </div>
+                                                                                                                                                                            `
                     : ''
                 }
                 <${titleTag}

@@ -96,6 +96,16 @@ Route::group(['middleware' => ['auth', 'role:admin'], 'prefix' => 'dashboard/adm
     Route::delete('pemilu-vote/destroys', 'PemiluVoteController@destroys')->name('pemilu-vote.destroys');
     Route::resource('pemilu-vote', 'PemiluVoteController')->except(['destroy']);
     
+    // iThings Categories
+    Route::get('ithings-categories/datatable', 'IthingsCategoryController@datatable')->name('ithings-categories.datatable');
+    Route::resource('ithings-categories', 'IthingsCategoryController')->except(['destroy', 'show']);
+    Route::delete('ithings-categories/destroys', 'IthingsCategoryController@destroys')->name('ithings-categories.destroys');
+    
+    // iThings Products
+    Route::get('ithings-products/datatable', 'IthingsProductController@datatable')->name('ithings-products.datatable');
+    Route::resource('ithings-products', 'IthingsProductController')->except(['destroy']);
+    Route::delete('ithings-products/destroys', 'IthingsProductController@destroys')->name('ithings-products.destroys');
+    
 });
 
 // Pengurus Routes
@@ -140,6 +150,10 @@ Route::group(['namespace' => 'Frontpage', 'as' => 'frontpage.'], function () {
     Route::get('CakapxHimatif', 'HomepageController@showCakap')->name('cakap.show');
     Route::get('pemilu/info', 'PemiluController@infoPemilu')->name('pemilu.info');
     Route::post('cakap/simpan',[CakapHimatifFrontpageController::class, 'store'])->name('cakap.store');
+    
+    // iThings - Produk HIMATIF
+    Route::get('ithings', 'IthingsController@index')->name('ithings.index');
+    Route::get('ithings/{slug}', 'IthingsController@show')->name('ithings.show');
 });
 
 Route::group(['namespace' => 'Frontpage', 'as' => 'frontpage.', 'middleware' => 'checkVotingPeriod'], function () {
