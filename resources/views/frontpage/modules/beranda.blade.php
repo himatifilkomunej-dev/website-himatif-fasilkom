@@ -48,7 +48,7 @@
             <!-- Right Content -->
             <div class="right-content opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-300" data-animate>
                 <div class="person-wrapper">
-                    <img src="{{ asset('img/bagian/ulul.png') }}" alt="HIMATIF Member" class="person-image">
+                    <img src="{{ asset('img/bagian/hanif.png') }}" alt="HIMATIF Member" class="person-image">
                 </div>
             </div>
         </div>
@@ -119,7 +119,7 @@
             <!-- Image Section - pada mobile akan tampil di atas (order-1) -->
             <div class="flex justify-center md:justify-start mb-10 md:mb-0 relative opacity-0 translate-y-8 transition-all duration-1000 ease-out order-1 md:order-1"
                 data-animate>
-                <img src="{{ asset('img/bagian/adinadunadan.png') }}" alt="HIMATIF Member"
+                <img src="{{ asset('img/bagian/karin.png') }}" alt="HIMATIF Member"
                     class="adinadunadan-image z-10 relative" />
             </div>
         </div>
@@ -172,7 +172,7 @@
                     </ol>
                 </div>
                 <div class="photo opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-600" data-animate>
-                    <img src="{{ asset('img/bagian/artha.png') }}" alt="Foto Ulul" />
+                    <img src="{{ asset('img/bagian/arifa.png') }}" alt="Foto Ulul" />
                 </div>
             </div>
         </div>
@@ -586,8 +586,23 @@
         }
 
         .person-image {
-            width: 320px;
+            width: 720px;
             border-radius: 12px;
+            margin-top: -70px;
+
+            /* Fade effect untuk menyatu dengan background cream */
+            mask: linear-gradient(to bottom,
+                    rgba(0, 0, 0, 1) 0%,
+                    rgba(0, 0, 0, 1) 50%,
+                    rgba(0, 0, 0, 0.7) 75%,
+                    rgba(0, 0, 0, 0.3) 90%,
+                    rgba(0, 0, 0, 0) 100%);
+            -webkit-mask: linear-gradient(to bottom,
+                    rgba(0, 0, 0, 1) 0%,
+                    rgba(0, 0, 0, 1) 50%,
+                    rgba(0, 0, 0, 0.7) 75%,
+                    rgba(0, 0, 0, 0.3) 90%,
+                    rgba(0, 0, 0, 0) 100%);
         }
 
         /* --- VISI MISI --- */
@@ -643,6 +658,20 @@
             transform: translateX(30px);
             margin-left: 100px;
             margin-top: -190px;
+
+            /* Fade effect untuk menyatu dengan background biru */
+            mask: linear-gradient(to bottom,
+                    rgba(0, 0, 0, 1) 0%,
+                    rgba(0, 0, 0, 1) 50%,
+                    rgba(0, 0, 0, 0.7) 75%,
+                    rgba(0, 0, 0, 0.3) 90%,
+                    rgba(0, 0, 0, 0) 100%);
+            -webkit-mask: linear-gradient(to bottom,
+                    rgba(0, 0, 0, 1) 0%,
+                    rgba(0, 0, 0, 1) 50%,
+                    rgba(0, 0, 0, 0.7) 75%,
+                    rgba(0, 0, 0, 0.3) 90%,
+                    rgba(0, 0, 0, 0) 100%);
         }
 
         /* --- ADINADUNADAN IMAGE STYLING --- */
@@ -651,20 +680,22 @@
             max-width: none !important;
             border-radius: 12px 12px 0 0 !important;
             margin-left: -100px !important;
-            margin-bottom: -80px !important;
+            margin-bottom: -150px !important;
 
-            /* Fade effect untuk menyatu dengan background */
+            /* Fade effect untuk menyatu dengan background - LEBIH FADE */
             mask: linear-gradient(to bottom,
                     rgba(0, 0, 0, 1) 0%,
-                    rgba(0, 0, 0, 1) 60%,
-                    rgba(0, 0, 0, 0.8) 80%,
-                    rgba(0, 0, 0, 0.3) 90%,
+                    rgba(0, 0, 0, 1) 40%,
+                    rgba(0, 0, 0, 0.6) 65%,
+                    rgba(0, 0, 0, 0.3) 80%,
+                    rgba(0, 0, 0, 0.1) 90%,
                     rgba(0, 0, 0, 0) 100%) !important;
             -webkit-mask: linear-gradient(to bottom,
                     rgba(0, 0, 0, 1) 0%,
-                    rgba(0, 0, 0, 1) 60%,
-                    rgba(0, 0, 0, 0.8) 80%,
-                    rgba(0, 0, 0, 0.3) 90%,
+                    rgba(0, 0, 0, 1) 40%,
+                    rgba(0, 0, 0, 0.6) 65%,
+                    rgba(0, 0, 0, 0.3) 80%,
+                    rgba(0, 0, 0, 0.1) 90%,
                     rgba(0, 0, 0, 0) 100%) !important;
 
             /* Eksperimen dengan properti di bawah ini (uncomment untuk menggunakan): */

@@ -249,7 +249,6 @@
                             $limit = Request::get('limit', 8);
                             $currentPage = (int) ceil($limit / 8);
 
-                            // Hitung total data dinamis dari database
                             $totalProkers = \App\Models\Proker::where('status', '1')->count();
                             $totalPages = ceil($totalProkers / 8);
 
@@ -257,7 +256,6 @@
                                 $totalPages = 1;
                             }
 
-                            // Cek apakah masih ada halaman selanjutnya
                             $hasMore = $prokers->count() >= 8 && $currentPage < $totalPages;
                         @endphp
 

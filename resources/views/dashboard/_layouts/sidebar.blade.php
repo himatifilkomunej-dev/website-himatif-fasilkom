@@ -69,6 +69,22 @@
                     </a>
                 </li> --}}
 
+                <li class="menu-header">iThings</li>
+
+                <li class="nav-item dropdown {{ Request::is('dashboard/admin/ithings*') ? 'active' : '' }}">
+                    <a href="#" class="nav-link has-dropdown"><i class="fas fa-shopping-bag"></i>
+                        <span>iThings</span></a>
+                    <ul class="dropdown-menu">
+                        <li class="{{ Request::is('dashboard/admin/ithings-categories*') ? 'active' : '' }}">
+                            <a class="nav-link"
+                                href="{{ route('dashboard.admin.ithings-categories.index') }}">Kategori</a>
+                        </li>
+                        <li class="{{ Request::is('dashboard/admin/ithings-products*') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('dashboard.admin.ithings-products.index') }}">Produk</a>
+                        </li>
+                    </ul>
+                </li>
+
                 <li class="menu-header">Pemilu</li>
 
                 <li class="nav-item dropdown {{ Request::is('dashboard/admin/pemilu*') ? 'active' : '' }}">
