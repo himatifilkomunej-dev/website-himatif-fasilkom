@@ -225,7 +225,7 @@
     </div>
 
     <!-- Floating WhatsApp Button -->
-    <a href="https://wa.me/6282228183433?text=Halo,%20kak%20mau%20beli%20produk%20iThings" class="whatsapp-float"
+    <a href="https://wa.me/6289503739107?text=Halo,%20kak%20mau%20beli%20produk%20iThings" class="whatsapp-float"
         target="_blank" rel="noopener noreferrer">
         <i class="fab fa-whatsapp"></i>
         <span>Pesan Sekarang</span>
@@ -275,6 +275,8 @@
             min-height: 100vh;
             width: 100%;
             padding: 0 20px;
+            display: flex;
+            flex-direction: column;
         }
 
         .ithings-title {
@@ -760,7 +762,7 @@
         .footer-image-section {
             width: 100%;
             text-align: center;
-            margin: 48px 0 0 0;
+            margin: auto 0 0 0;
         }
 
         .footer-image-container {

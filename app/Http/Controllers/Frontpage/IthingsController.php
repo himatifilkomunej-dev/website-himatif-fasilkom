@@ -25,33 +25,46 @@ class IthingsController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->q;
-        $categoryId = $request->category;
-        
-        // Get all categories for filter
-        $categories = $this->categoryRepository->get();
-        
-        // Get all products for carousel (status 1 only - available products)
-        $carouselProducts = $this->productRepository->get(100, [['status', 1]]);
-        
-        // Build filter conditions for main product list (show all status)
-        $filter = [];
-        if ($search) {
-            $filter[] = ['name', 'LIKE', "%$search%"];
+        try {
+            $search = $request->q;
+            $categoryId = $request->category;
+            
+            // Get all categories for filter
+            $categories = $this->categoryRepository->get();
+            
+            // Get all products for carousel (status 1 only - available products)
+            $carouselProducts = $this->productRepository->get(100, [['status', 1]]);
+            
+            // Build filter conditions for main product list (show all status)
+            $filter = [];
+            if ($search) {
+                $filter[] = ['name', 'LIKE', "%$search%"];
+            }
+            if ($categoryId) {
+                $filter[] = ['category_id', $categoryId];
+            }
+            // Show all products regardless of status
+            
+            // Get products with pagination
+            $limit = $request->limit ?? 9;
+            $perPage = 9;
+            $offset = max(0, $limit - $perPage);
+            
+            $products = $this->productRepository->get($perPage, $filter, [], $offset);
+            
+            return view('frontpage.modules.ithings-index', compact('products', 'categories', 'carouselProducts'));
+        } catch (\Exception $e) {
+            \Log::error('iThings Index Error: ' . $e->getMessage());
+            \Log::error('Stack trace: ' . $e->getTraceAsString());
+            
+            // Return view with empty data to prevent 500 error
+            $products = collect([]);
+            $categories = collect([]);
+            $carouselProducts = collect([]);
+            
+            return view('frontpage.modules.ithings-index', compact('products', 'categories', 'carouselProducts'))
+                ->with('error', 'Terjadi kesalahan saat memuat produk. Silakan coba lagi nanti.');
         }
-        if ($categoryId) {
-            $filter[] = ['category_id', $categoryId];
-        }
-        // Show all products regardless of status
-        
-        // Get products with pagination
-        $limit = $request->limit ?? 9;
-        $perPage = 9;
-        $offset = max(0, $limit - $perPage);
-        
-        $products = $this->productRepository->get($perPage, $filter, [], $offset);
-        
-        return view('frontpage.modules.ithings-index', compact('products', 'categories', 'carouselProducts'));
     }
 
     /**
