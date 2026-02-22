@@ -143,7 +143,7 @@
     </div>
 
     <!-- Floating WhatsApp Button -->
-    <a href="https://wa.me/6282228183433?text=Halo,%20kak%20mau%20beli%20ini%20dungs%20{{ urlencode($product->name) }}"
+    <a href="https://wa.me/6289503739107?text=Halo,%20kak%20mau%20beli%20ini%20dungs%20{{ urlencode($product->name) }}"
         class="whatsapp-float" target="_blank" rel="noopener noreferrer">
         <i class="fab fa-whatsapp"></i>
         <span>Pesan Sekarang</span>
