@@ -586,7 +586,7 @@
         }
 
         .person-image {
-            width: 720px;
+            width: 1000px;
             border-radius: 12px;
             margin-top: -70px;
 
@@ -653,7 +653,7 @@
         }
 
         .visi-misi-section .photo img {
-            width: 470px;
+            width: 520px;
             border-radius: 12px;
             transform: translateX(30px);
             margin-left: 100px;
@@ -676,7 +676,7 @@
 
         /* --- ADINADUNADAN IMAGE STYLING --- */
         .adinadunadan-image {
-            width: 500px !important;
+            width: 550px !important;
             max-width: none !important;
             border-radius: 12px 12px 0 0 !important;
             margin-left: -100px !important;
@@ -1104,7 +1104,7 @@
             }
 
             .person-image {
-                width: 280px;
+                width: 700px;
             }
 
             .visi-misi-section .content {
@@ -1188,7 +1188,7 @@
             }
 
             .person-image {
-                width: 240px;
+                width: 500px;
             }
 
             .badge-text {
@@ -1243,7 +1243,7 @@
             }
 
             .person-image {
-                width: 200px;
+                width: 400px;
             }
 
             .badge-text {
