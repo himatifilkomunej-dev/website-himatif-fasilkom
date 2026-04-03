@@ -210,7 +210,7 @@
                     <div class="flex justify-center pb-0 mb-0 transition-all duration-1000 ease-out translate-y-8 opacity-0 lg:w-1/3"
                         data-animate-scroll>
                         <div
-                            class="flex items-center justify-center w-48 h-48 pt-32 text-5xl text-gray-600 md:w-full md:h-full rounded-xl md:text-6xl">
+                            class="flex items-center justify-center w-48 h-48 text-gray-600 text5xl pt md:w-full md:h-full rounded-xl md:text-6xl">
                             <img src="{{ asset('img/hanif.png') }}" alt="HIMATIF Member" class="person-image">
                         </div>
                     </div>
@@ -638,12 +638,30 @@
             font-weight: 700;
         }
 
+        /* Styling Foto Ketum dan Responsifitas */
         .person-image {
         width: 100%;
         height: 100%;
-        object-fit: cover;
         object-position: center top;
-        transform: scale(1.3) translateY(-86.7px);
+        object-fit: cover;
+        transform: scale(2.5) translateY(-15px) ;
+        }
+
+        @media (min-width: 640px) {
+        .person-image {
+            transform: scale(1);
+        }
+        }
+
+        @media (min-width: 768px) {
+        .person-image {
+            transform: scale(1) translateY(+40px);
+        }
+        }
+
+        @media (min-width: 1024px) {
+        .person-image {
+            transform: scale(1.4) translateY(-107px);
         }
     </style>
 @endsection
