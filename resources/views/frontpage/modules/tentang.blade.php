@@ -9,10 +9,10 @@
     <main>
         <!-- Decorative Images -->
         <img src="{{ asset('img/bagian/3.png') }}"
-            class="header-decoration-left opacity-0 -translate-x-8 transition-all duration-1000 ease-out z-10 hidden md:block"
+            class="z-10 hidden transition-all duration-1000 ease-out -translate-x-8 opacity-0 header-decoration-left md:block"
             data-animate-left>
         <img src="{{ asset('img/bagian/4.png') }}"
-            class="header-decoration-right opacity-0 translate-x-8 transition-all duration-1000 ease-out z-10 hidden md:block"
+            class="z-10 hidden transition-all duration-1000 ease-out translate-x-8 opacity-0 header-decoration-right md:block"
             data-animate-right>
 
         <!-- <div class="decorative-side right-side ">
@@ -28,23 +28,23 @@
                         <div class="inline-block px-4 py-3 sm:px-6 sm:py-4 lg:px-8 lg:py-4 mb-4 sm:mb-6 text-white rounded-full bg-[#910E19] opacity-0 translate-y-8 transition-all duration-1000 ease-out"
                             data-animate>
                             <span
-                                class="tentang-title text-lg sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-semibold">TENTANG</span>
+                                class="text-lg font-semibold tentang-title sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl">TENTANG</span>
                         </div>
-                        <h1 class="mb-4 sm:mb-6 text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-gray-900 opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-200"
+                        <h1 class="mb-4 text-3xl font-black text-gray-900 transition-all duration-1000 ease-out delay-200 translate-y-8 opacity-0 sm:mb-6 sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl"
                             data-animate>
                             HIMATIF
                         </h1>
-                        <p class="z-20 text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed max-w-4xl mx-auto xl:mx-0 text-justify opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-400"
+                        <p class="z-20 max-w-4xl mx-auto text-sm leading-relaxed text-justify transition-all duration-1000 ease-out translate-y-8 opacity-0 sm:text-base md:text-lg lg:text-xl xl:mx-0 delay-400"
                             data-animate>
                             {{ $header['2-text2']->content ?? 'HIMATIF (Himpunan Mahasiswa Teknologi Informasi) adalah Salah satu Organisasi Mahasiswa di Fakultas Ilmu Komputer Universitas Jember yang didirikan pada tanggal 4 Agustus 2017. Maksud dan tujuan dari organisasi ini adalah melatih para mahasiswa Teknologi Informasi pada tanggal 4 Agustus 2017.' }}
                         </p>
                     </div>
 
                     <!-- Right Logo -->
-                    <div class="flex justify-center xl:justify-end items-center flex-1 opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-600"
+                    <div class="flex items-center justify-center flex-1 transition-all duration-1000 ease-out translate-y-8 opacity-0 xl:justify-end delay-600"
                         data-animate>
                         <img src="{{ asset('img/logo.png') }}" alt="HIMATIF Logo"
-                            class="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-64 lg:h-64 xl:w-80 xl:h-80 object-contain">
+                            class="object-contain w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-64 lg:h-64 xl:w-80 xl:h-80">
                     </div>
 
                 </div>
@@ -55,72 +55,72 @@
         <section class="relative bg-[#FEF9F1] px-4 py-16 md:px-6 overflow-hidden">
             <div class="container mx-auto max-w-7xl">
                 <!-- Title -->
-                <div class="text-center mb-8 sm:mb-12 md:mb-16 flex justify-center sm:justify-end">
+                <div class="flex justify-center mb-8 text-center sm:mb-12 md:mb-16 sm:justify-end">
                     <div class="inline-block px-4 py-3 sm:px-6 sm:py-4 lg:px-8 lg:py-4 text-white rounded-full bg-[#910E19] opacity-0 translate-y-8 transition-all duration-1000 ease-out"
                         data-animate-scroll>
-                        <span class="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold">FILOSOFI LOGO</span>
+                        <span class="text-lg font-bold sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl">FILOSOFI LOGO</span>
                     </div>
                 </div>
 
                 <!-- Content Grid -->
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 sm:gap-10 md:gap-12 items-start lg:items-center opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-200"
+                <div class="grid items-start grid-cols-1 gap-8 transition-all duration-1000 ease-out delay-200 translate-y-8 opacity-0 lg:grid-cols-3 sm:gap-10 md:gap-12 lg:items-center"
                     data-animate-scroll>
                     <!-- Left Content -->
                     <div class="space-y-4 sm:space-y-6 md:space-y-8">
                         <div
-                            class="relative p-4 sm:p-5 md:p-6 bg-white border-2 border-gray-200 rounded-xl sm:rounded-2xl shadow-lg">
+                            class="relative p-4 bg-white border-2 border-gray-200 shadow-lg sm:p-5 md:p-6 rounded-xl sm:rounded-2xl">
                             <div
                                 class="absolute -top-2 sm:-top-3 left-4 sm:left-6 w-4 h-4 sm:w-6 sm:h-6 bg-[#910E19] rounded-full">
                             </div>
                             <h3 class="text-base sm:text-lg md:text-xl font-bold text-[#02314A] mb-2 sm:mb-3 pt-1 sm:pt-2">
                                 Lambang Universitas Jember</h3>
-                            <p class="text-sm sm:text-base text-gray-700 leading-relaxed">
+                            <p class="text-sm leading-relaxed text-gray-700 sm:text-base">
                                 Menandakan kebanggaan HIMATIF sebagai bagian dari Program Studi Teknologi Informasi
                                 UNIVERSITAS JEMBER
                             </p>
                         </div>
 
                         <div
-                            class="relative p-4 sm:p-5 md:p-6 bg-white border-2 border-gray-200 rounded-xl sm:rounded-2xl shadow-lg">
+                            class="relative p-4 bg-white border-2 border-gray-200 shadow-lg sm:p-5 md:p-6 rounded-xl sm:rounded-2xl">
                             <div
                                 class="absolute -top-2 sm:-top-3 left-4 sm:left-6 w-4 h-4 sm:w-6 sm:h-6 bg-[#910E19] rounded-full">
                             </div>
                             <h3 class="text-base sm:text-lg md:text-xl font-bold text-[#02314A] mb-2 sm:mb-3 pt-1 sm:pt-2">
                                 Orang Mengelilingi Lambang UNEJ</h3>
-                            <p class="text-sm sm:text-base text-gray-700 leading-relaxed">
+                            <p class="text-sm leading-relaxed text-gray-700 sm:text-base">
                                 Melambangkan HIMATIF berada dalam naungan Universitas Jember dan merupakan bagian dari
                                 keluarga Universitas Jember
                             </p>
                         </div>
 
                         <div
-                            class="relative p-4 sm:p-5 md:p-6 bg-white border-2 border-gray-200 rounded-xl sm:rounded-2xl shadow-lg">
+                            class="relative p-4 bg-white border-2 border-gray-200 shadow-lg sm:p-5 md:p-6 rounded-xl sm:rounded-2xl">
                             <div
                                 class="absolute -top-2 sm:-top-3 left-4 sm:left-6 w-4 h-4 sm:w-6 sm:h-6 bg-[#910E19] rounded-full">
                             </div>
                             <h3 class="text-base sm:text-lg md:text-xl font-bold text-[#02314A] mb-2 sm:mb-3 pt-1 sm:pt-2">
                                 Lambang Orang yang Saling Merangkul</h3>
-                            <p class="text-sm sm:text-base text-gray-700 leading-relaxed">
+                            <p class="text-sm leading-relaxed text-gray-700 sm:text-base">
                                 Mengartikan rasa kekeluargaan, solidaritas yang tinggi, dan kebersamaan, berjumlah enam
                                 melambangkan tanggal terbentuknya HIMATIF yaitu tanggal 06
                             </p>
                         </div>
 
                         <div
-                            class="relative p-4 sm:p-5 md:p-6 bg-white border-2 border-gray-200 rounded-xl sm:rounded-2xl shadow-lg">
+                            class="relative p-4 bg-white border-2 border-gray-200 shadow-lg sm:p-5 md:p-6 rounded-xl sm:rounded-2xl">
                             <div
                                 class="absolute -top-2 sm:-top-3 left-4 sm:left-6 w-4 h-4 sm:w-6 sm:h-6 bg-[#910E19] rounded-full">
                             </div>
                             <h3 class="text-base sm:text-lg md:text-xl font-bold text-[#02314A] mb-2 sm:mb-3 pt-1 sm:pt-2">
                                 Warna Abu-Abu</h3>
-                            <p class="text-sm sm:text-base text-gray-700 leading-relaxed">
+                            <p class="text-sm leading-relaxed text-gray-700 sm:text-base">
                                 Bermakna kemantapan kejayaan dan kesejahteraan
                             </p>
                         </div>
                     </div>
 
                     <!-- Logo in the Middle -->
-                    <div class="flex items-center justify-center order-first lg:order-none mb-8 lg:mb-0">
+                    <div class="flex items-center justify-center order-first mb-8 lg:order-none lg:mb-0">
                         <div class="relative">
                             <!-- Decorative background circle -->
                             <div
@@ -130,7 +130,7 @@
                             <div
                                 class="relative w-48 h-48 sm:w-64 sm:h-64 md:w-72 md:h-72 lg:w-80 lg:h-80 flex items-center justify-center bg-white rounded-full shadow-xl sm:shadow-2xl border-2 sm:border-4 border-[#910E19]">
                                 <img src="{{ asset('img/logo.png') }}" alt="Logo HIMATIF"
-                                    class="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-64 lg:h-64 object-contain">
+                                    class="object-contain w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-64 lg:h-64">
                             </div>
                         </div>
                     </div>
@@ -138,53 +138,53 @@
                     <!-- Right Content -->
                     <div class="space-y-4 sm:space-y-6 md:space-y-8">
                         <div
-                            class="relative p-4 sm:p-5 md:p-6 bg-white border-2 border-gray-200 rounded-xl sm:rounded-2xl shadow-lg">
+                            class="relative p-4 bg-white border-2 border-gray-200 shadow-lg sm:p-5 md:p-6 rounded-xl sm:rounded-2xl">
                             <div
                                 class="absolute -top-2 sm:-top-3 right-4 sm:right-6 w-4 h-4 sm:w-6 sm:h-6 bg-[#910E19] rounded-full">
                             </div>
                             <h3
                                 class="text-base sm:text-lg md:text-xl font-bold text-[#02314A] mb-2 sm:mb-3 pt-1 sm:pt-2 text-center sm:text-right">
                                 Warna Putih</h3>
-                            <p class="text-sm sm:text-base text-gray-700 leading-relaxed text-center sm:text-right">
+                            <p class="text-sm leading-relaxed text-center text-gray-700 sm:text-base sm:text-right">
                                 Bermakna kesucian dan kejujuran
                             </p>
                         </div>
 
                         <div
-                            class="relative p-4 sm:p-5 md:p-6 bg-white border-2 border-gray-200 rounded-xl sm:rounded-2xl shadow-lg">
+                            class="relative p-4 bg-white border-2 border-gray-200 shadow-lg sm:p-5 md:p-6 rounded-xl sm:rounded-2xl">
                             <div
                                 class="absolute -top-2 sm:-top-3 right-4 sm:right-6 w-4 h-4 sm:w-6 sm:h-6 bg-[#910E19] rounded-full">
                             </div>
                             <h3
                                 class="text-base sm:text-lg md:text-xl font-bold text-[#02314A] mb-2 sm:mb-3 pt-1 sm:pt-2 text-center sm:text-right">
                                 Segi Delapan</h3>
-                            <p class="text-sm sm:text-base text-gray-700 leading-relaxed text-center sm:text-right">
+                            <p class="text-sm leading-relaxed text-center text-gray-700 sm:text-base sm:text-right">
                                 Melambangkan bulan terbentuknya HIMATIF yaitu bulan Agustus
                             </p>
                         </div>
 
                         <div
-                            class="relative p-4 sm:p-5 md:p-6 bg-white border-2 border-gray-200 rounded-xl sm:rounded-2xl shadow-lg">
+                            class="relative p-4 bg-white border-2 border-gray-200 shadow-lg sm:p-5 md:p-6 rounded-xl sm:rounded-2xl">
                             <div
                                 class="absolute -top-2 sm:-top-3 right-4 sm:right-6 w-4 h-4 sm:w-6 sm:h-6 bg-[#910E19] rounded-full">
                             </div>
                             <h3
                                 class="text-base sm:text-lg md:text-xl font-bold text-[#02314A] mb-2 sm:mb-3 pt-1 sm:pt-2 text-center sm:text-right">
                                 Warna Abu-abu dan Putih</h3>
-                            <p class="text-sm sm:text-base text-gray-700 leading-relaxed text-center sm:text-right">
+                            <p class="text-sm leading-relaxed text-center text-gray-700 sm:text-base sm:text-right">
                                 Melambangkan Fakultas Ilmu Komputer yang menaungi HIMATIF
                             </p>
                         </div>
 
                         <div
-                            class="relative p-4 sm:p-5 md:p-6 bg-white border-2 border-gray-200 rounded-xl sm:rounded-2xl shadow-lg">
+                            class="relative p-4 bg-white border-2 border-gray-200 shadow-lg sm:p-5 md:p-6 rounded-xl sm:rounded-2xl">
                             <div
                                 class="absolute -top-2 sm:-top-3 right-4 sm:right-6 w-4 h-4 sm:w-6 sm:h-6 bg-[#910E19] rounded-full">
                             </div>
                             <h3
                                 class="text-base sm:text-lg md:text-xl font-bold text-[#02314A] mb-2 sm:mb-3 pt-1 sm:pt-2 text-center sm:text-right">
                                 Garis Berwarna Kuning</h3>
-                            <p class="text-sm sm:text-base text-gray-700 leading-relaxed text-center sm:text-right">
+                            <p class="text-sm leading-relaxed text-center text-gray-700 sm:text-base sm:text-right">
                                 Melambangkan sikap optimis dan selalu berpikiran positif
                             </p>
                         </div>
@@ -204,19 +204,19 @@
                     </path>
                 </svg>
             </div>
-            <div class="container mx-auto pt-8 sm:pt-12 md:pt-18">
+            <div class="container pt-8 mx-auto sm:pt-12 md:pt-18">
                 <div class="flex flex-col items-center gap-8 sm:gap-12 lg:gap-16 xl:flex-row">
                     <!-- Person Image -->
-                    <div class="flex justify-center lg:w-1/3 mb-0 pb-0 opacity-0 translate-y-8 transition-all duration-1000 ease-out"
+                    <div class="flex justify-center pb-0 mb-0 transition-all duration-1000 ease-out translate-y-8 opacity-0 lg:w-1/3"
                         data-animate-scroll>
                         <div
-                            class="flex items-center justify-center pt-32 w-48 h-48 text-5xl text-gray-600 md:w-full md:h-full rounded-xl md:text-6xl">
-                            <img src="{{ asset('img/ulul.png') }}" alt="HIMATIF Member" class="person-image">
+                            class="flex items-center justify-center w-48 h-48 text-gray-600 text5xl pt md:w-full md:h-full rounded-xl md:text-6xl">
+                            <img src="{{ asset('img/hanif.png') }}" alt="HIMATIF Member" class="person-image">
                         </div>
                     </div>
 
                     <!-- Vision & Mission Content -->
-                    <div class="space-y-6 sm:space-y-8 lg:w-2/3 w-full opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-200"
+                    <div class="w-full space-y-6 transition-all duration-1000 ease-out delay-200 translate-y-8 opacity-0 sm:space-y-8 lg:w-2/3"
                         data-animate-scroll>
                         <!-- Vision -->
                         <div
@@ -230,7 +230,7 @@
                                 <h2
                                     class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#910E19] mb-3 sm:mb-4 md:mb-6">
                                     VISI</h2>
-                                <p class="text-sm sm:text-base md:text-lg leading-relaxed text-gray-800 text-justify">
+                                <p class="text-sm leading-relaxed text-justify text-gray-800 sm:text-base md:text-lg">
                                     Terwujudnya mahasiswa berkarakter serta menjadi media untuk mengembangkan potensi
                                     mahasiswa di bidang IPTEK yang didasari tanggung jawab dan sikap profesionalisme.
                                 </p>
@@ -239,7 +239,7 @@
 
                         <!-- Mission -->
                         <div
-                            class="relative p-4 sm:p-6 md:p-8 bg-gradient-to-br from-gray-50 to-white border-2 sm:border-4 border-gray-600 rounded-2xl sm:rounded-3xl w-full shadow-lg">
+                            class="relative w-full p-4 border-2 border-gray-600 shadow-lg sm:p-6 md:p-8 bg-gradient-to-br from-gray-50 to-white sm:border-4 rounded-2xl sm:rounded-3xl">
                             <!-- Tab folder di atas -->
                             <div
                                 class="absolute -top-2 sm:-top-4 left-1/2 -translate-x-1/2 w-16 sm:w-24 md:w-32 h-4 sm:h-6 md:h-8 bg-[#BFB4A0] rounded-full">
@@ -252,7 +252,7 @@
                                         MISI</h2>
                                 </div>
                                 <div
-                                    class="space-y-2 sm:space-y-3 md:space-y-4 text-sm sm:text-base md:text-lg leading-relaxed text-gray-800">
+                                    class="space-y-2 text-sm leading-relaxed text-gray-800 sm:space-y-3 md:space-y-4 sm:text-base md:text-lg">
                                     {!! $visionMission['4-mission_text2']->content ??
                                         '
                                                                                                                                                                                                                                                                                                                                                                         <div class="flex items-start gap-3">
@@ -293,17 +293,17 @@
             <div class="container mx-auto text-center">
                 <div class="inline-block px-4 py-3 sm:px-6 sm:py-4 md:px-8 md:py-4 mb-4 sm:mb-6 text-white rounded-full bg-[#910E19] opacity-0 translate-y-8 transition-all duration-1000 ease-out"
                     data-animate-scroll>
-                    <span class="text-lg sm:text-xl md:text-3xl lg:text-4xl xl:text-6xl font-semibold">STRUKTUR
+                    <span class="text-lg font-semibold sm:text-xl md:text-3xl lg:text-4xl xl:text-6xl">STRUKTUR
                         KEPENGURUSAN</span>
                 </div>
 
-                <div class="w-full h-full mx-auto max-w-4xl sm:max-w-5xl my-8 sm:my-12 md:my-16 opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-200"
+                <div class="w-full h-full max-w-4xl mx-auto my-8 transition-all duration-1000 ease-out delay-200 translate-y-8 opacity-0 sm:max-w-5xl sm:my-12 md:my-16"
                     data-animate-scroll>
-                    <img src="{{ asset('img/bagian/struktur-pengurus.png') }}" class="w-full h-full object-contain"
+                    <img src="{{ asset('img/bagian/struktur-pengurus.png') }}" class="object-contain w-full h-full"
                         alt="">
                 </div>
 
-                <div class="max-w-7xl p-4 sm:p-6 md:p-8 lg:p-10 mx-auto opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-400"
+                <div class="p-4 mx-auto transition-all duration-1000 ease-out translate-y-8 opacity-0 max-w-7xl sm:p-6 md:p-8 lg:p-10 delay-400"
                     data-animate-scroll>
                     <!-- All Divisions in single responsive grid -->
                     <div
@@ -311,60 +311,60 @@
                         <!-- Divisi Utama -->
                         <div class="flex items-center p-3 sm:p-4 font-semibold text-left text-[#02314A] opacity-0 -translate-x-8 transition-all duration-1000 ease-out"
                             data-animate-left>
-                            <img class="mr-3 sm:mr-4 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 object-contain"
+                            <img class="object-contain w-8 h-8 mr-3 sm:mr-4 sm:w-10 sm:h-10 md:w-12 md:h-12"
                                 src="{{ asset('img/bagian/logo-divisi/lodiv-1.png') }}" alt="BPH">
                             <div class="flex flex-col items-start">
-                                <h3 class="font-bold text-sm sm:text-base md:text-lg text-left">BPH</h3>
+                                <h3 class="text-sm font-bold text-left sm:text-base md:text-lg">BPH</h3>
                                 <small
-                                    class="font-normal text-xs sm:text-sm text-gray-600 text-left leading-tight line-clamp-2">Badan
+                                    class="text-xs font-normal leading-tight text-left text-gray-600 sm:text-sm line-clamp-2">Badan
                                     Pengurus Harian</small>
                             </div>
                         </div>
 
                         <div class="flex items-center p-3 sm:p-4 font-semibold text-left text-[#02314A] rounded-lg opacity-0 -translate-x-8 transition-all duration-1000 ease-out"
                             data-animate-left>
-                            <img class="mr-3 sm:mr-4 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 object-contain"
+                            <img class="object-contain w-8 h-8 mr-3 sm:mr-4 sm:w-10 sm:h-10 md:w-12 md:h-12"
                                 src="{{ asset('img/bagian/logo-divisi/lodiv-8.png') }}" alt="PSDM">
                             <div class="flex flex-col items-start">
-                                <h3 class="font-bold text-sm sm:text-base md:text-lg text-left">PSDM</h3>
+                                <h3 class="text-sm font-bold text-left sm:text-base md:text-lg">PSDM</h3>
                                 <small
-                                    class="font-normal text-xs sm:text-sm text-gray-600 text-left leading-tight line-clamp-2">Pengembangan
+                                    class="text-xs font-normal leading-tight text-left text-gray-600 sm:text-sm line-clamp-2">Pengembangan
                                     Sumber Daya Mahasiswa</small>
                             </div>
                         </div>
 
                         <div class="flex items-center p-3 sm:p-4 font-semibold text-left text-[#02314A] rounded-lg opacity-0 translate-x-8 transition-all duration-1000 ease-out"
                             data-animate-right>
-                            <img class="mr-3 sm:mr-4 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 object-contain"
+                            <img class="object-contain w-8 h-8 mr-3 sm:mr-4 sm:w-10 sm:h-10 md:w-12 md:h-12"
                                 src="{{ asset('img/bagian/logo-divisi/lodiv-7.png') }}" alt="MEDIATEK">
                             <div class="flex flex-col items-start">
-                                <h3 class="font-bold text-sm sm:text-base md:text-lg text-left">MEDIATEK</h3>
+                                <h3 class="text-sm font-bold text-left sm:text-base md:text-lg">MEDIATEK</h3>
                                 <small
-                                    class="font-normal text-xs sm:text-sm text-gray-600 text-left leading-tight line-clamp-2">Media
+                                    class="text-xs font-normal leading-tight text-left text-gray-600 sm:text-sm line-clamp-2">Media
                                     & Teknologi</small>
                             </div>
                         </div>
 
                         <div class="flex items-center p-3 sm:p-4 font-semibold text-left text-[#02314A] rounded-lg opacity-0 translate-x-8 transition-all duration-1000 ease-out"
                             data-animate-right>
-                            <img class="mr-3 sm:mr-4 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 object-contain"
+                            <img class="object-contain w-8 h-8 mr-3 sm:mr-4 sm:w-10 sm:h-10 md:w-12 md:h-12"
                                 src="{{ asset('img/bagian/logo-divisi/lodiv-3.png') }}" alt="MEDFO">
                             <div class="flex flex-col items-start">
-                                <h3 class="font-bold text-sm sm:text-base md:text-lg text-left">MEDFO</h3>
+                                <h3 class="text-sm font-bold text-left sm:text-base md:text-lg">MEDFO</h3>
                                 <small
-                                    class="font-normal text-xs sm:text-sm text-gray-600 text-left leading-tight line-clamp-2">Media
+                                    class="text-xs font-normal leading-tight text-left text-gray-600 sm:text-sm line-clamp-2">Media
                                     & Informasi</small>
                             </div>
                         </div>
 
                         <div class="flex items-center p-3 sm:p-4 font-semibold text-left text-[#02314A] rounded-lg opacity-0 translate-x-8 transition-all duration-1000 ease-out"
                             data-animate-right>
-                            <img class="mr-3 sm:mr-4 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 object-contain"
+                            <img class="object-contain w-8 h-8 mr-3 sm:mr-4 sm:w-10 sm:h-10 md:w-12 md:h-12"
                                 src="{{ asset('img/bagian/logo-divisi/lodiv-2.png') }}" alt="PEMTEK">
                             <div class="flex flex-col items-start">
-                                <h3 class="font-bold text-sm sm:text-base md:text-lg text-left">PEMTEK</h3>
+                                <h3 class="text-sm font-bold text-left sm:text-base md:text-lg">PEMTEK</h3>
                                 <small
-                                    class="font-normal text-xs sm:text-sm text-gray-600 text-left leading-tight line-clamp-2">Pengembangan
+                                    class="text-xs font-normal leading-tight text-left text-gray-600 sm:text-sm line-clamp-2">Pengembangan
                                     Minat & Teknologi</small>
                             </div>
                         </div>
@@ -372,48 +372,48 @@
                         <!-- Sub Divisi -->
                         <div class="flex items-center p-3 sm:p-4 font-semibold text-left text-[#02314A] opacity-0 -translate-x-8 transition-all duration-1000 ease-out"
                             data-animate-left>
-                            <img class="mr-3 sm:mr-4 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 object-contain"
+                            <img class="object-contain w-8 h-8 mr-3 sm:mr-4 sm:w-10 sm:h-10 md:w-12 md:h-12"
                                 src="{{ asset('img/bagian/logo-divisi/lodiv-9.png') }}" alt="LITBANG">
                             <div class="flex flex-col items-start">
-                                <h3 class="font-bold text-sm sm:text-base md:text-lg text-left">LITBANG</h3>
+                                <h3 class="text-sm font-bold text-left sm:text-base md:text-lg">LITBANG</h3>
                                 <small
-                                    class="font-normal text-xs sm:text-sm text-gray-600 text-left leading-tight line-clamp-2">Penelitian
+                                    class="text-xs font-normal leading-tight text-left text-gray-600 sm:text-sm line-clamp-2">Penelitian
                                     dan Pengembangan</small>
                             </div>
                         </div>
 
                         <div class="flex items-center p-3 sm:p-4 font-semibold text-left text-[#02314A] opacity-0 -translate-x-8 transition-all duration-1000 ease-out"
                             data-animate-left>
-                            <img class="mr-3 sm:mr-4 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 object-contain"
+                            <img class="object-contain w-8 h-8 mr-3 sm:mr-4 sm:w-10 sm:h-10 md:w-12 md:h-12"
                                 src="{{ asset('img/bagian/logo-divisi/lodiv-4.png') }}" alt="HUMAS">
                             <div class="flex flex-col items-start">
-                                <h3 class="font-bold text-sm sm:text-base md:text-lg text-left">HUMAS</h3>
+                                <h3 class="text-sm font-bold text-left sm:text-base md:text-lg">HUMAS</h3>
                                 <small
-                                    class="font-normal text-xs sm:text-sm text-gray-600 text-left leading-tight line-clamp-2">Hubungan
+                                    class="text-xs font-normal leading-tight text-left text-gray-600 sm:text-sm line-clamp-2">Hubungan
                                     Masyarakat</small>
                             </div>
                         </div>
 
                         <div class="flex items-center p-3 sm:p-4 font-semibold text-left text-[#02314A] rounded-lg opacity-0 translate-x-8 transition-all duration-1000 ease-out"
                             data-animate-right>
-                            <img class="mr-3 sm:mr-4 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 object-contain"
+                            <img class="object-contain w-8 h-8 mr-3 sm:mr-4 sm:w-10 sm:h-10 md:w-12 md:h-12"
                                 src="{{ asset('img/bagian/logo-divisi/lodiv-5.png') }}" alt="HUBLU">
                             <div class="flex flex-col items-start">
-                                <h3 class="font-bold text-sm sm:text-base md:text-lg text-left">HUBLU</h3>
+                                <h3 class="text-sm font-bold text-left sm:text-base md:text-lg">HUBLU</h3>
                                 <small
-                                    class="font-normal text-xs sm:text-sm text-gray-600 text-left leading-tight line-clamp-2">Hubungan
+                                    class="text-xs font-normal leading-tight text-left text-gray-600 sm:text-sm line-clamp-2">Hubungan
                                     Luar</small>
                             </div>
                         </div>
 
                         <div class="flex items-center p-3 sm:p-4 font-semibold text-left text-[#02314A] rounded-lg opacity-0 translate-x-8 transition-all duration-1000 ease-out"
                             data-animate-right>
-                            <img class="mr-3 sm:mr-4 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 object-contain"
+                            <img class="object-contain w-8 h-8 mr-3 sm:mr-4 sm:w-10 sm:h-10 md:w-12 md:h-12"
                                 src="{{ asset('img/bagian/logo-divisi/lodiv-6.png') }}" alt="MEDSOS">
                             <div class="flex flex-col items-start">
-                                <h3 class="font-bold text-sm sm:text-base md:text-lg text-left">MEDSOS</h3>
+                                <h3 class="text-sm font-bold text-left sm:text-base md:text-lg">MEDSOS</h3>
                                 <small
-                                    class="font-normal text-xs sm:text-sm text-gray-600 text-left leading-tight line-clamp-2">Media
+                                    class="text-xs font-normal leading-tight text-left text-gray-600 sm:text-sm line-clamp-2">Media
                                     Sosial</small>
                             </div>
                         </div>
@@ -636,6 +636,32 @@
         /* Custom font-weight for TENTANG title */
         .tentang-title {
             font-weight: 700;
+        }
+
+        /* Styling Foto Ketum dan Responsifitas */
+        .person-image {
+        width: 100%;
+        height: 100%;
+        object-position: center top;
+        object-fit: cover;
+        transform: scale(2.5) translateY(-15px) ;
+        }
+
+        @media (min-width: 640px) {
+        .person-image {
+            transform: scale(1);
+        }
+        }
+
+        @media (min-width: 768px) {
+        .person-image {
+            transform: scale(1) translateY(+40px);
+        }
+        }
+
+        @media (min-width: 1024px) {
+        .person-image {
+            transform: scale(1.4) translateY(-107px);
         }
     </style>
 @endsection
