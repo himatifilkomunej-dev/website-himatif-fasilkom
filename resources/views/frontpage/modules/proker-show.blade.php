@@ -485,12 +485,18 @@
                             @endif
 
                             @if ($proker->is_registration_open === '1')
-                                @if ($proker->id !== 3)
+                                @php
+                                    $hasValidRegistrationLink =
+                                        !empty($proker->link_registration) &&
+                                        filter_var($proker->link_registration, FILTER_VALIDATE_URL);
+                                @endphp
+
+                                @if ($hasValidRegistrationLink)
                                     <a href="{{ $proker->link_registration }}" target="_blank"
                                         class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-red-600 to-red-800 text-white font-semibold rounded-full hover:from-red-700 hover:to-red-900 transition-all duration-300 hover:scale-105 shadow-lg">
                                         Daftar Sekarang
                                     </a>
-                                @else
+                                @elseif ($proker->id === 3)
                                     <a href="https://docs.google.com/forms/d/e/1FAIpQLSeo4ac_T7jZlIbINJ8Vdz0Cm0K0Lkd2RHor-ZdOs7XYw6fXXQ/viewform?usp=header"
                                         target="_blank"
                                         class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-red-600 to-red-800 text-white font-semibold rounded-full hover:from-red-700 hover:to-red-900 transition-all duration-300 hover:scale-105 shadow-lg">
