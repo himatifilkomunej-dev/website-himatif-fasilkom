@@ -63,6 +63,10 @@ class PostController extends Controller
         ])->validate();
         
         try {
+            $request->merge([
+                'body' => $this->normalizePostBody($request->body),
+            ]);
+
             $this->postRepository->save($request->all());
             // $this->postRepository->save($content);
             return redirect()->route('dashboard.admin.posts.index')->with([
@@ -124,8 +128,31 @@ class PostController extends Controller
         ])->validate();
 
         // try {
-        $content = '<div class="ck-content">' . $request->body . '</div>';
-        
+        $request->merge([
+            'body' => $this->normalizePostBody($request->body),
+        ]);
+        $this->postRepository->update($id, $request->all());
+
+        return redirect()->route('dashboard.admin.posts.edit', $id)->with([
+            'type' => 'success',
+            'message' => 'Ubah Data Post Berhasil'
+        ]);
+        // } catch (\Exception $e) {
+        //     return redirect()->route('dashboard.admin.posts.edit', $id)->with([
+        //         'type' => 'danger',
+        //         'message' => 'Ubah Data Post Gagal, Terjadi kesalahan pada sistem.'
+        //     ]);
+        // }
+    }
+
+    private function normalizePostBody($body)
+    {
+        $content = trim($body ?? '');
+
+        if (!preg_match('/^<div\b[^>]*class=(["\'])(?:(?!\1).)*\bck-content\b(?:(?!\1).)*\1[^>]*>/i', $content)) {
+            $content = '<div class="ck-content">' . $content . '</div>';
+        }
+
         $dom = new \DomDocument();
         @$dom->loadHtml($content, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
@@ -156,26 +183,13 @@ class PostController extends Controller
                     /** public_path - points directly to public path */
                     ->save(public_path('storage' . $filePath));
 
-                $newImageSrc = asset(asset('storage') . $filePath);
+                $newImageSrc = asset('storage' . $filePath);
                 $image->removeAttribute('src');
                 $image->setAttribute('src', $newImageSrc);
             }
         }
 
-        $content = $dom->saveHTML();
-        $request['body'] = $content;
-        $this->postRepository->update($id, $request->all());
-
-        return redirect()->route('dashboard.admin.posts.edit', $id)->with([
-            'type' => 'success',
-            'message' => 'Ubah Data Post Berhasil'
-        ]);
-        // } catch (\Exception $e) {
-        //     return redirect()->route('dashboard.admin.posts.edit', $id)->with([
-        //         'type' => 'danger',
-        //         'message' => 'Ubah Data Post Gagal, Terjadi kesalahan pada sistem.'
-        //     ]);
-        // }
+        return $dom->saveHTML();
     }
 
     /**

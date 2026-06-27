@@ -59,8 +59,11 @@
                                     {{ \Carbon\Carbon::parse($post->created_at)->diffForHumans() }}
                                 </div>
                                 <h3 class="berita-card-title">{{ $post->title }}</h3>
+                                @php
+                                    $excerpt = trim(preg_replace('/\s+/u', ' ', html_entity_decode(strip_tags(str_replace(['<br>', '<br/>', '<br />'], ' ', $post->body)), ENT_QUOTES | ENT_HTML5, 'UTF-8')));
+                                @endphp
                                 <p class="berita-card-excerpt">
-                                    {{ Str::limit(strip_tags(str_replace(['<br>', '&nbsp;'], ' ', $post->body)), 120) }}
+                                    {{ Str::limit($excerpt, 120) }}
                                 </p>
                                 <div class="read-more-btn">
                                     Baca Selengkapnya →

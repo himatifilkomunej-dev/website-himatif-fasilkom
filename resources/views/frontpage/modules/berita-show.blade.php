@@ -37,8 +37,12 @@
 
                         <div class="berita-article-content opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-200"
                             data-animate>
+                            @php
+                                $postBody = trim($post->body);
+                                $hasCkContentWrapper = preg_match('/^<div\b[^>]*class=(["\'])(?:(?!\1).)*\bck-content\b(?:(?!\1).)*\1[^>]*>/i', $postBody);
+                            @endphp
                             <div class="article-body">
-                                {!! $post->body !!}
+                                {!! $hasCkContentWrapper ? $postBody : '<div class="ck-content">' . $postBody . '</div>' !!}
                             </div>
                         </div>
                     </div>
@@ -66,8 +70,11 @@
                                             class="sidebar-post-title">
                                             {{ $otherPost->title }}
                                         </a>
+                                        @php
+                                            $otherPostExcerpt = trim(preg_replace('/\s+/u', ' ', html_entity_decode(strip_tags(str_replace(['<br>', '<br/>', '<br />'], ' ', $otherPost->body)), ENT_QUOTES | ENT_HTML5, 'UTF-8')));
+                                        @endphp
                                         <div class="sidebar-post-excerpt">
-                                            {{ Str::limit(strip_tags($otherPost->body), 60) }}
+                                            {{ Str::limit($otherPostExcerpt, 60) }}
                                         </div>
                                     </div>
                                 </div>

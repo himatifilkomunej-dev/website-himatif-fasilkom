@@ -111,7 +111,7 @@ class PostRepository
 
             $post = new Post;
             $post->title = $data['title'];
-            $post->body = \Purifier::clean($data['body']);
+            $post->body = $data['body'];
             $post->category_id = $data['category_id'];
             $post->slug = $this->findBySlug($slug) ? $slug .= '-' . \Str::random(5) . time() : $slug;
             $post->created_at = now();
