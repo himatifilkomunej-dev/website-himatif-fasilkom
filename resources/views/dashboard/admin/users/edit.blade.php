@@ -153,30 +153,35 @@
                     </div>
                 </div>
 
-                {{-- PASSWORD FORM (TERPISAH) --}}
-                <div class="card">
-                    <div class="card-body">
-                        <form action="{{ route('dashboard.admin.users.update-password', $user->id) }}" method="POST">
-                            @csrf
-                            @method('PUT')
-                            <h6 class="mb-3">Ubah Password</h6>
-                            @component('dashboard._components._form-group.input')
-                                @slot('inputType', 'password')
-                                @slot('inputLabel', 'Password Baru')
-                                @slot('inputName', 'password')
-                                @slot('inputId', 'input-password')
-                            @endcomponent
-                            <div class="row justify-content-end">
-                                <div class="col-auto">
-                                    <button class="btn btn-primary">Update Password</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
             </div>
         </div>
     </form>
+
+    {{-- PASSWORD FORM (TERPISAH) --}}
+    <div class="row justify-content-end">
+        <div class="col-lg-7">
+            <div class="card">
+                <div class="card-body">
+                    <form action="{{ route('dashboard.admin.users.update-password', $user->id) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <h6 class="mb-3">Ubah Password</h6>
+                        @component('dashboard._components._form-group.input')
+                            @slot('inputType', 'password')
+                            @slot('inputLabel', 'Password Baru')
+                            @slot('inputName', 'password')
+                            @slot('inputId', 'input-password')
+                        @endcomponent
+                        <div class="row justify-content-end">
+                            <div class="col-auto">
+                                <button class="btn btn-primary">Update Password</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('script')

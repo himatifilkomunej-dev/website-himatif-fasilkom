@@ -249,6 +249,11 @@ class UserRepository
         try {
             $user = User::findOrFail($id);
 
+            $periodeYears = $data['periode_year'] ?? null;
+            $periodeDivisions = $data['periode_division'] ?? [];
+            $periodePositions = $data['periode_position'] ?? [];
+            $password = $data['password'] ?? null;
+
             $allowed = [
                 'name', 'nim', 'email', 'phone',
                 'instagram', 'linkedin', 'status'
@@ -257,16 +262,16 @@ class UserRepository
             $data = Arr::only($data, $allowed);
             $user->fill($data);
 
-            if (isset($data['periode_year'])) {
+            if (is_array($periodeYears)) {
                 $user->periode = array_map(fn ($i) => [
-                    'year'        => $data['periode_year'][$i],
-                    'division_id' => $data['periode_division'][$i] ?? null,
-                    'position'    => $data['periode_position'][$i] ?? null,
-                ], array_keys($data['periode_year']));
+                    'year'        => $periodeYears[$i],
+                    'division_id' => $periodeDivisions[$i] ?? null,
+                    'position'    => $periodePositions[$i] ?? null,
+                ], array_keys($periodeYears));
             }
 
-            if (!empty($data['password'])) {
-                $user->password = bcrypt($data['password']);
+            if (!empty($password)) {
+                $user->password = $password;
             }
 
             if ($request && $request->hasFile('photo')) {

@@ -125,8 +125,8 @@ class UserController extends Controller
         \Validator::make($request->all(), [
             'name' => 'required',
             'nim' => 'required',
-            'instagram' => 'nullable|url',
-            'linkedin' => 'nullable|url',
+            'instagram' => 'nullable|string|max:255',
+            'linkedin' => 'nullable|string|max:255',
             'email' => 'required|string|email|unique:users,email,' . $id,
             'status' => 'required',
             'periode_year' => 'required|array',
@@ -148,29 +148,13 @@ class UserController extends Controller
                     ]);
             }
 
-            // Ambil semua input kecuali password (jika kosong)
-            $data = $request->except('password');
+            // Ambil semua input kecuali file dan token form.
+            $data = $request->except(['_token', '_method', 'photo', 'profile_video']);
 
             // Jika password diisi, update dengan hash
             if ($request->filled('password')) {
-                $data['password'] = bcrypt($request->password);
+                $data['password'] = $request->password;
             }
-
-            // Format periode menjadi JSON sebelum update
-            $data['periode'] = json_encode(
-                array_map(
-                    function ($year, $division, $position) {
-                        return [
-                            'year' => $year,
-                            'division_id' => $division,
-                            'position' => $position,
-                        ];
-                    },
-                    $request->periode_year,
-                    $request->periode_division,
-                    $request->periode_position,
-                ),
-            );
 
             // Update user
             $this->userRepository->update($id, $data, $request); 
@@ -213,12 +197,14 @@ class UserController extends Controller
 
     public function updatePassword(Request $request, $id)
     {
-        \Validator::make($request->password, [
+        \Validator::make($request->all(), [
             'password' => 'required|min:6',
         ])->validate();
 
         try {
-            $this->userRepository->update($id, $request->password);
+            $this->userRepository->update($id, [
+                'password' => $request->password,
+            ]);
             return redirect()
                 ->route('dashboard.admin.users.index')
                 ->with([
