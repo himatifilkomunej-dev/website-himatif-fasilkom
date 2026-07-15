@@ -18,11 +18,13 @@
                     <a id="ithings" href="/ithings" class="nav-item nav-link">Produk kami</a>
                     <div class="dropdown-wrapper">
                         <a id="lainnya" class="nav-item nav-link dropdown-toggle">Lainnya ▾</a>
-                        <ul class="dropdown-menu">
-                            <li><a id="nim-checker" href="/nim-checker" class="dropdown-item">NIM CHECKER</a></li>
-                            {{-- <li><a id="cakap" href="/CakapxHimatif" class="dropdown-item">CAKAPxHIMATIF</a></li> --}}
-                            <li><a id="pemilu" href="/pemilu" class="dropdown-item">PEMILU</a></li>
-                        </ul>
+                        <div class="dropdown-menu">
+                            <ul class="dropdown-menu-inner">
+                                <li><a id="nim-checker" href="/nim-checker" class="dropdown-item">NIM CHECKER</a></li>
+                                {{-- <li><a id="cakap" href="/CakapxHimatif" class="dropdown-item">CAKAPxHIMATIF</a></li> --}}
+                                <li><a id="pemilu" href="/pemilu" class="dropdown-item">PEMILU</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -94,9 +96,6 @@
                             </a>
                         </div>
                     </div>
-
-
-
                 </div>
             </div>
         </div>
@@ -109,11 +108,9 @@
         align-items: center;
     }
 
-
     .nav-outer-shape {
         --outer-bg: #00101A;
         background: var(--outer-bg);
-        /* Bentuk kotak biasa tanpa sudut melengkung */
         border-radius: 0 0 18px 18px;
         padding: 0 30px 0;
         height: 80px;
@@ -124,7 +121,6 @@
         position: relative;
     }
 
-    /* Lekukan kiri atas (rounded keluar) */
     .nav-outer-shape::before {
         content: '';
         position: absolute;
@@ -135,7 +131,6 @@
         background: radial-gradient(circle at bottom left, transparent 24px, var(--outer-bg) 24px);
     }
 
-    /* Lekukan kanan atas (rounded keluar) */
     .nav-outer-shape::after {
         content: '';
         position: absolute;
@@ -146,40 +141,26 @@
         background: radial-gradient(circle at bottom right, transparent 24px, var(--outer-bg) 24px);
     }
 
-    /* Pastikan konten di atas background */
-    .nav-outer-shape>* {
-        position: relative;
-        z-index: 1;
-    }
-
-    /* Pastikan konten di atas background */
     .nav-outer-shape>* {
         position: relative;
         z-index: 1;
     }
 
     .nav-inner-pill {
-        /* Inner pill tetap, sedikit diperbesar */
         --cream: #FEF9F1;
         background: #00101A;
         border: 4px solid var(--cream);
-        /* Border lebih tebal dari 2px jadi 4px */
         border-radius: 9999px;
         display: flex;
         gap: 4px;
-        /* padding: 6px 10px; */
-        /* dulu 4px 6px */
         position: relative;
     }
 
     .nav-link {
         color: #FFFFFF;
         font-size: 0.95rem;
-        /* diperbesar */
         font-weight: 600;
-        /* sedikit lebih tebal */
         padding: 12px 26px;
-        /* diperbesar dari 10px 22px */
         line-height: 1.1;
         border-radius: 9999px;
         cursor: pointer;
@@ -199,7 +180,7 @@
         color: #00101A;
     }
 
-    /* Dropdown */
+    /* ========== Dropdown (FIXED: no more gap that breaks hover) ========== */
     .dropdown-wrapper {
         position: relative;
     }
@@ -208,35 +189,46 @@
         padding-right: 30px;
     }
 
-    .dropdown-wrapper:hover .dropdown-menu {
+    /* Trigger dropdown saat hover wrapper ATAU dropdown-menu itu sendiri,
+       jadi walau cursor sedikit meleset ke area jembatan, tetap kebaca hover */
+    .dropdown-wrapper:hover .dropdown-menu,
+    .dropdown-menu:hover {
         opacity: 1;
         pointer-events: auto;
         transform: translateY(0);
     }
 
+    /* Container ini yang jadi "jembatan" hover, full dari top:100% tombol.
+       Pakai padding-top (bukan margin-top) supaya area kosong tetap
+       dianggap bagian dari elemen yang bisa di-hover -> gak ada celah mati */
     .dropdown-menu {
         position: absolute;
         top: 100%;
         right: 0;
-        margin-top: 10px;
+        padding-top: 14px;
+        width: 190px;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(6px);
+        transition: opacity .2s ease, transform .2s ease;
+        z-index: 60;
+    }
+
+    /* Box putih visual, dipisah dari .dropdown-menu supaya jembatan
+       di atas tetap transparan tapi tetap "hoverable" */
+    .dropdown-menu-inner {
         background: #FFFFFF;
         border-radius: 14px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, .15);
         padding: 8px 0;
         list-style: none;
-        width: 190px;
-        opacity: 0;
-        pointer-events: none;
-        transform: translateY(6px);
-        transition: opacity .25s ease, transform .25s ease;
-        z-index: 60;
+        margin: 0;
     }
 
     .dropdown-item {
         display: block;
         padding: 9px 18px;
         font-size: 0.75rem;
-        /* 12px */
         text-decoration: none;
         color: #00101A;
         font-weight: 500;
@@ -260,8 +252,6 @@
     }
 
     @media (max-width:1023px) {
-
-        /* hide custom desktop nav on mobile */
         .desktop-nav {
             display: none;
         }
@@ -295,10 +285,8 @@
     function setActiveFromURL() {
         const currentPath = window.location.pathname;
 
-        // Desktop nav links (custom) use .nav-link and .active
         document.querySelectorAll('.nav-inner-pill .nav-link').forEach(el => el.classList.remove('active'));
 
-        // Mobile items still Tailwind-based
         document.querySelectorAll('#mobileMenu .nav-item').forEach(item => {
             item.classList.remove('bg-[#FEF9F1]', 'text-[#00101A]');
             item.classList.add('text-white');
@@ -351,10 +339,8 @@
         });
 
         if (openDropdown) {
-            // highlight dropdown toggle on desktop
             const lainnyaToggle = document.getElementById('lainnya');
             if (lainnyaToggle) lainnyaToggle.classList.add('active');
-            // expand mobile submenu
             lainnyaMobileMenu.classList.remove('hidden');
             arrowIcon.classList.add('rotate-180');
         }
