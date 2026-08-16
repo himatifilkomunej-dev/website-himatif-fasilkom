@@ -861,6 +861,10 @@
             height: 19rem;
             overflow: hidden;
             background: transparent;
+            border-top-right-radius: 1rem !important;
+            border-bottom-right-radius: 1rem !important;
+            border-bottom-left-radius: 1rem !important;
+            isolation: isolate;
         }
 
         .pengurus-loading-photo,
@@ -875,8 +879,19 @@
         .pengurus-loading-photo {
             height: 15rem;
             background: #910E19;
-            border-top-right-radius: 1rem;
-            clip-path: polygon(20px 0, 100% 0, 100% 100%, 0 100%, 0 20px);
+            border-top-right-radius: 1rem !important;
+        }
+
+        .pengurus-loading-photo::before {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 3;
+            width: 20px;
+            height: 20px;
+            content: '';
+            background: #02314A;
+            clip-path: polygon(0 0, 100% 0, 0 100%);
         }
 
         .pengurus-loading-info {
@@ -884,6 +899,7 @@
             right: 1rem;
             bottom: 1rem;
             left: 1rem;
+            z-index: 4;
         }
 
         .pengurus-loading-line {
@@ -939,6 +955,11 @@
             animation: pengurus-shimmer 1.5s infinite;
         }
 
+        .pengurus-loading-photo::after {
+            z-index: 2;
+            border-top-right-radius: 1rem;
+        }
+
         @keyframes pengurus-shimmer {
             100% {
                 transform: translateX(100%);
@@ -951,7 +972,12 @@
             z-index: 10;
             overflow: hidden;
             background: #7f1d1d;
+            border-top-right-radius: 1rem !important;
             transition: opacity 0.35s ease;
+        }
+
+        .profile-media-placeholder::after {
+            border-top-right-radius: 1rem !important;
         }
 
         .profile-media-placeholder.is-hidden {
