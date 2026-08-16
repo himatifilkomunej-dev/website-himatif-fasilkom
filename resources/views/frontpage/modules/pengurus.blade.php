@@ -893,33 +893,31 @@
         async function loadPengurus(year) {
             const container = document.getElementById('pengurus-container');
 
-            // Fade out
-            container.style.opacity = '0';
-            container.style.transform = 'translateY(1rem)';
+            container.style.opacity = '0.3';
+            container.style.pointerEvents = 'none';
 
-            await new Promise(r => setTimeout(r, 300));
+            try {
+                const res = await fetch(`{{ route('frontpage.pengurus.filter') }}?year=${year}`);
+                const json = await res.json();
 
-            const res = await fetch(`{{ route('frontpage.pengurus.filter') }}?year=${year}`);
-            const json = await res.json();
+                renderPengurus(json.data);
 
-            renderPengurus(json.data);
+                container.style.opacity = '1';
+                container.style.pointerEvents = 'auto';
 
-            // Fade in container and cards
-            await new Promise(r => setTimeout(r, 50));
+                setTimeout(() => {
+                    const cards = container.querySelectorAll('.member-card-animate');
+                    cards.forEach((card) => {
+                        card.style.opacity = '1';
+                    });
 
-            container.style.opacity = '1';
-            container.style.transform = 'translateY(0)';
-
-            // Animate member cards
-            setTimeout(() => {
-                const cards = container.querySelectorAll('.member-card-animate');
-                cards.forEach((card) => {
-                    card.style.opacity = '1';
-                });
-
-                // Setup video hover controls
-                setupVideoHoverControls();
-            }, 150);
+                    setupVideoHoverControls();
+                }, 100);
+            } catch (err) {
+                console.error('Error loading pengurus:', err);
+                container.style.opacity = '1';
+                container.style.pointerEvents = 'auto';
+            }
         }
 
         function setupVideoHoverControls() {

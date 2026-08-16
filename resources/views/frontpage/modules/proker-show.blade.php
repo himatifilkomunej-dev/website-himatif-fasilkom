@@ -54,10 +54,12 @@
                         </h1>
 
                         @if ($proker->is_registration_open === '1')
-                            <div class="inline-flex items-center px-6 py-3 border rounded-full bg-red-700 opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-600"
+                            <a href="#accordion-flush-heading-1" class="inline-flex items-center px-6 py-3 border rounded-full bg-red-700 opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-600 cursor-pointer hover:bg-red-800 transition-colors"
                                 data-animate>
-                                <span class="font-semibold">Pendaftaran Dibuka</span>
-                            </div>
+                                <span class="font-semibold">
+                                    {{ ($proker->id == 1 || strtolower($proker->name) === 'ithings') ? 'Pesan Sekarang' : 'Pendaftaran Dibuka' }}
+                                </span>
+                            </a>
                         @endif
                     </div>
 
@@ -497,7 +499,7 @@
                                 @if ($hasValidRegistrationLink)
                                     <a href="{{ $proker->link_registration }}" target="_blank"
                                         class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-red-600 to-red-800 text-white font-semibold rounded-full hover:from-red-700 hover:to-red-900 transition-all duration-300 hover:scale-105 shadow-lg">
-                                        Daftar Sekarang
+                                        {{ ($proker->id == 1 || strtolower($proker->name) === 'ithings') ? 'Pesan Sekarang' : 'Daftar Sekarang' }}
                                     </a>
                                 @elseif ($proker->id === 3)
                                     <a href="https://docs.google.com/forms/d/e/1FAIpQLSeo4ac_T7jZlIbINJ8Vdz0Cm0K0Lkd2RHor-ZdOs7XYw6fXXQ/viewform?usp=header"

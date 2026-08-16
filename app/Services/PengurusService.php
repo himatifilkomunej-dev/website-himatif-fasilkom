@@ -19,6 +19,7 @@ class PengurusService
     public function byYear(string $year)
     {
         $users = $this->userRepository->byYear($year);
+        $divisionsMap = $this->divisionRepository->get()->keyBy('id');
 
         $positionPriority = [
             'Ketua Umum'        => 1,
@@ -41,9 +42,10 @@ class PengurusService
             'Pengembangan Teknologi'  => 9,
         ];
 
-        $data = $users->map(function ($user) use ($year) {
+        $data = $users->map(function ($user) use ($year, $divisionsMap) {
             $activePeriode = collect($user->periode)->firstWhere('year', $year);
-            $division = $this->divisionRepository->findById($activePeriode['division_id'] ?? null);
+            $divisionId = $activePeriode['division_id'] ?? null;
+            $division = $divisionsMap->get($divisionId);
             
             return [
                 'user_id'       => $user->id,

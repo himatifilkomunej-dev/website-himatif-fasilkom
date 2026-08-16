@@ -110,7 +110,17 @@ class UserRepository
 
     public function byYear(string $year)
     {
-        return User::whereJsonContains('periode', [
+        return User::select([
+            'id',
+            'name',
+            'photo',
+            'instagram',
+            'linkedin',
+            'profile_video',
+            'periode',
+            'status'
+        ])
+        ->whereJsonContains('periode', [
             'year' => $year
         ])->get();
     }

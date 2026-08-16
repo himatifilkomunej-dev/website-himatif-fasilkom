@@ -66,12 +66,11 @@ class HomepageController extends Controller
     //     return view('frontpage.modules.pengurus', compact(['header', 'divisions', 'pengurus']));
     // }
 
-    public function getPengurus(){
+    public function getPengurus()
+    {
         $header = (array) json_decode($this->pageContentRepository->findBySlug('header-pengurus')->data);
         $divisions = $this->divisionRepository->getParent();
-        // $pengurus = $this->userRepository->getPengurus();
-        $pengurus = $this->userRepository->get();
-        return view('frontpage.modules.pengurus', compact(['header', 'divisions', 'pengurus']));
+        return view('frontpage.modules.pengurus', compact(['header', 'divisions']));
     }
 
     public function getProker(Request $request)
