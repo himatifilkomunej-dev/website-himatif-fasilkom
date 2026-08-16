@@ -104,7 +104,9 @@
                                     class="flex items-center justify-between w-full py-5 font-medium rtl:text-right text-gray-500 border-b border-gray-200 gap-3"
                                     data-accordion-target="#accordion-flush-body-1" aria-expanded="true"
                                     aria-controls="accordion-flush-body-1">
-                                    <span>Timeline {{ $proker->name === 'ITEC' ? 'UI/UX' : '' }}</span>
+                                    {{-- Kondisi ITEC per bidang disimpan dulu; aktifkan lagi jika timeline perlu dibedakan. --}}
+                                    {{-- <span>Timeline {{ $proker->name === 'ITEC' ? 'UI/UX' : '' }}</span> --}}
+                                    <span>Timeline</span>
                                     <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true"
                                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -225,7 +227,8 @@
 
                                 </div>
                             </div>
-                            @if ($proker->name === 'ITEC')
+                            {{-- Kondisi ITEC per bidang disimpan dulu; aktifkan lagi jika timeline perlu dibedakan. --}}
+                            @if (false && $proker->name === 'ITEC')
                                 <h6 id="accordion-flush-heading-99">
                                     <button type="button"
                                         class="flex items-center justify-between w-full py-5 font-medium rtl:text-right text-gray-500 border-b border-gray-200 gap-3"
