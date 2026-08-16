@@ -24,7 +24,7 @@
 
         <!-- Hero Section -->
         <section class="bg-[#FEF9F1] relative overflow-hidden text-white rounded-b-[6rem]">
-            <div class="container px-4 py-16 mx-auto md:px-6 md:py-24">
+            <div class="relative z-10 container px-4 py-16 mx-auto md:px-6 md:py-24">
                 <div class="flex flex-col items-center gap-12 lg:flex-row">
                     <!-- Left Content -->
                     <div class="flex-1 text-center lg:text-left lg:ml-16">
@@ -54,8 +54,8 @@
                         </h1>
 
                         @if ($proker->is_registration_open === '1')
-                            <a href="#accordion-flush-heading-1" class="inline-flex items-center px-6 py-3 border rounded-full bg-red-700 opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-600 cursor-pointer hover:bg-red-800 transition-colors"
-                                data-animate>
+                            <a href="#accordion-flush-heading-1" class="inline-flex items-center px-6 py-3 border rounded-full bg-red-700 opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-600 cursor-pointer touch-manipulation hover:bg-red-800 transition-colors focus:outline-none focus:ring-4 focus:ring-red-300"
+                                data-scroll-to-timeline data-animate>
                                 <span class="font-semibold">
                                     {{ ($proker->id == 1 || strtolower($proker->name) === 'ithings') ? 'Pesan Sekarang' : 'Pendaftaran Dibuka' }}
                                 </span>
@@ -67,10 +67,10 @@
             </div>
 
             <!-- Background Patterns -->
-            <div class="absolute top-0 left-0 opacity-10">
+            <div class="absolute top-0 left-0 opacity-10 pointer-events-none" aria-hidden="true">
                 <div class="w-64 h-64 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full"></div>
             </div>
-            <div class="absolute bottom-0 right-0 opacity-10">
+            <div class="absolute bottom-0 right-0 opacity-10 pointer-events-none" aria-hidden="true">
                 <div class="w-64 h-64 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full"></div>
             </div>
         </section>
@@ -101,7 +101,7 @@
                         @if ($proker->is_timeline_open)
 
 
-                            <h6 id="accordion-flush-heading-1">
+                            <h6 id="accordion-flush-heading-1" class="scroll-mt-24">
                                 <button type="button"
                                     class="flex items-center justify-between w-full py-5 font-medium rtl:text-right text-gray-500 border-b border-gray-200 gap-3"
                                     data-accordion-target="#accordion-flush-body-1" aria-expanded="true"
@@ -967,6 +967,25 @@
     <script>
         // Smooth scroll animations with Intersection Observer
         document.addEventListener('DOMContentLoaded', function() {
+            const timelineLink = document.querySelector('[data-scroll-to-timeline]');
+            const timelineSection = document.getElementById('accordion-flush-heading-1');
+
+            if (timelineLink && timelineSection) {
+                timelineLink.addEventListener('click', function(event) {
+                    event.preventDefault();
+
+                    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                    timelineSection.scrollIntoView({
+                        behavior: reduceMotion ? 'auto' : 'smooth',
+                        block: 'start'
+                    });
+
+                    if (window.history && window.history.replaceState) {
+                        window.history.replaceState(null, '', '#accordion-flush-heading-1');
+                    }
+                });
+            }
+
             // Create intersection observer for animations
             const observerOptions = {
                 threshold: 0.1,

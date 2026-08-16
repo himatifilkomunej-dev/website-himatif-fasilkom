@@ -85,7 +85,68 @@
 
 
                 {{-- CONTAINER UTAMA --}}
-                <div id="pengurus-container" class="transition-all duration-500 ease-out"></div>
+                <div id="pengurus-container" class="transition-all duration-500 ease-out" aria-live="polite"
+                    aria-busy="true">
+                    @php
+                        $initialDivisionLogos = [
+                            'Badan Pengurus Harian' => 'Badan Pengurus Harian.png',
+                            'Pengembangan Sumber Daya Mahasiswa' => 'Pengembangan Sumber Daya Mahasiswa.png',
+                            'Penelitian dan Pengembangan' => 'Penelitian dan Pengembangan.png',
+                            'Hubungan Mahasiswa' => 'Hubungan Mahasiswa.png',
+                            'Media & Teknologi' => 'Media & Teknologi.png',
+                        ];
+                    @endphp
+
+                    <span class="sr-only" role="status">Memuat data pengurus...</span>
+                    @foreach ($initialPengurus as $divisionName => $members)
+                        @php
+                            $divisionMembers = collect($members);
+                            $heads = $divisionMembers->filter(
+                                fn ($member) => str_contains(strtolower($member['position']), 'kepala divisi'),
+                            );
+                            $others = $divisionMembers->reject(
+                                fn ($member) => str_contains(strtolower($member['position']), 'kepala divisi'),
+                            );
+                            $divisionLogo = $initialDivisionLogos[$divisionName] ?? null;
+                            $isSubdivision = !$divisionLogo;
+                        @endphp
+
+                        <div class="flex flex-col items-center p-6 mb-6 rounded-2xl md:p-8">
+                            <div class="flex flex-col items-center gap-6 mb-10">
+                                @if ($divisionLogo)
+                                    <div class="w-40 h-40">
+                                        <img src="{{ asset('img/bagian/logo-divisi/' . $divisionLogo) }}"
+                                            class="object-contain w-full h-full" alt="Logo {{ $divisionName }}">
+                                    </div>
+                                @endif
+
+                                @if ($isSubdivision)
+                                    <h3 class="text-2xl font-bold text-center text-white">{{ $divisionName }}</h3>
+                                @else
+                                    <h2 class="mb-12 text-2xl font-bold text-center text-white md:text-3xl">
+                                        {{ $divisionName }}
+                                    </h2>
+                                @endif
+                            </div>
+
+                            @if ($heads->isNotEmpty())
+                                <div class="flex justify-center w-full mb-10">
+                                    @foreach ($heads as $member)
+                                        @include('frontpage.modules.partials.pengurus-card-skeleton')
+                                    @endforeach
+                                </div>
+                            @endif
+
+                            @if ($others->isNotEmpty())
+                                <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                                    @foreach ($others as $member)
+                                        @include('frontpage.modules.partials.pengurus-card-skeleton')
+                                    @endforeach
+                                </div>
+                            @endif
+                        </div>
+                    @endforeach
+                </div>
 
             </div>
         </section>
@@ -771,11 +832,145 @@
         }
 
 
-        /* FOTO - Always visible by default */
-        .profile-image {
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        #pengurus-container {
+            min-height: 24rem;
         }
 
+        .pengurus-loading {
+            display: grid;
+            grid-template-columns: repeat(1, minmax(0, 17rem));
+            justify-content: center;
+            gap: 1.5rem;
+            padding: 2rem 0;
+        }
+
+        @media (min-width: 640px) {
+            .pengurus-loading {
+                grid-template-columns: repeat(2, minmax(0, 17rem));
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .pengurus-loading {
+                grid-template-columns: repeat(3, minmax(0, 17rem));
+            }
+        }
+
+        .pengurus-loading-card {
+            width: 17rem;
+            height: 19rem;
+            overflow: hidden;
+            background: transparent;
+        }
+
+        .pengurus-loading-photo,
+        .pengurus-loading-line,
+        .pengurus-loading-arrow,
+        .pengurus-loading-icon {
+            position: relative;
+            overflow: hidden;
+            background: rgba(254, 249, 241, 0.18);
+        }
+
+        .pengurus-loading-photo {
+            height: 15rem;
+            background: #910E19;
+            border-top-right-radius: 1rem;
+            clip-path: polygon(20px 0, 100% 0, 100% 100%, 0 100%, 0 20px);
+        }
+
+        .pengurus-loading-info {
+            position: absolute;
+            right: 1rem;
+            bottom: 1rem;
+            left: 1rem;
+        }
+
+        .pengurus-loading-line {
+            width: 70%;
+            height: 0.75rem;
+            margin: 0.55rem auto 0;
+            border-radius: 9999px;
+        }
+
+        .pengurus-loading-line-short {
+            width: 45%;
+        }
+
+        .pengurus-loading-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 4rem;
+            padding: 0 1.5rem;
+            background: #910E19;
+            border-bottom-right-radius: 1rem;
+            border-bottom-left-radius: 1rem;
+        }
+
+        .pengurus-loading-arrow {
+            width: 1.75rem;
+            height: 0.3rem;
+            border-radius: 9999px;
+        }
+
+        .pengurus-loading-icons {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .pengurus-loading-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            background: rgba(254, 249, 241, 0.75);
+            border-radius: 0.375rem;
+        }
+
+        .pengurus-loading-photo::after,
+        .pengurus-loading-line::after,
+        .pengurus-loading-arrow::after,
+        .pengurus-loading-icon::after,
+        .profile-media-placeholder::after {
+            position: absolute;
+            inset: 0;
+            content: '';
+            transform: translateX(-100%);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: pengurus-shimmer 1.5s infinite;
+        }
+
+        @keyframes pengurus-shimmer {
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        .profile-media-placeholder {
+            position: absolute;
+            inset: 0;
+            z-index: 10;
+            overflow: hidden;
+            background: #7f1d1d;
+            transition: opacity 0.35s ease;
+        }
+
+        .profile-media-placeholder.is-hidden {
+            opacity: 0;
+        }
+
+        .profile-image {
+            opacity: 0;
+            transition: opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        .profile-image.is-loaded {
+            opacity: 1;
+        }
+
+        .member-info-overlay {
+            background: transparent;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+        }
 
         /* VIDEO - Initially hidden, controlled by JavaScript */
         .profile-video {
@@ -786,6 +981,21 @@
 
         .profile-video.show-video {
             opacity: 1;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .pengurus-loading-photo::after,
+            .pengurus-loading-line::after,
+            .pengurus-loading-arrow::after,
+            .pengurus-loading-icon::after,
+            .profile-media-placeholder::after {
+                animation: none;
+            }
+
+            .profile-image,
+            .profile-video {
+                transition: none !important;
+            }
         }
     </style>
 @endsection
@@ -881,80 +1091,254 @@
             }, 500);
         });
 
+        const pengurusEndpoint = @json(route('frontpage.pengurus.filter'));
+        const storageBaseUrl = @json(asset('storage'));
+        const memberPlaceholderUrl = @json(asset('img/photo/sections/member-placeholder.png'));
+        const initialPengurusYear = @json($initialYear);
+        const initialPengurusData = @json($initialPengurus);
+        const pengurusCache = new Map();
+        pengurusCache.set(String(initialPengurusYear), initialPengurusData);
+        let activePengurusRequest = null;
+        let activeLoadId = 0;
+        let profileVideoObserver = null;
+
         document.addEventListener('DOMContentLoaded', () => {
             const select = document.getElementById('yearSelect');
             loadPengurus(select.value);
 
-            select.addEventListener('change', e => {
-                loadPengurus(e.target.value);
+            select.addEventListener('change', event => {
+                loadPengurus(event.target.value);
             });
         });
 
-        async function loadPengurus(year) {
-            const container = document.getElementById('pengurus-container');
+        function renderLoadingState(container) {
+            const cards = Array.from({ length: 6 }, () => `
+                <div class="pengurus-loading-card" aria-hidden="true">
+                    <div class="pengurus-loading-photo">
+                        <div class="pengurus-loading-info">
+                            <div class="pengurus-loading-line"></div>
+                            <div class="pengurus-loading-line pengurus-loading-line-short"></div>
+                        </div>
+                    </div>
+                    <div class="pengurus-loading-footer">
+                        <div class="pengurus-loading-arrow"></div>
+                        <div class="pengurus-loading-icons">
+                            <div class="pengurus-loading-icon"></div>
+                            <div class="pengurus-loading-icon"></div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
 
-            container.style.opacity = '0.3';
-            container.style.pointerEvents = 'none';
+            container.innerHTML = `
+                <div class="pengurus-loading" role="status">
+                    <span class="sr-only">Memuat data pengurus...</span>
+                    ${cards}
+                </div>
+            `;
+        }
+
+        function renderSkeletonCard() {
+            return `
+                <div class="pengurus-loading-card" aria-hidden="true">
+                    <div class="pengurus-loading-photo">
+                        <div class="pengurus-loading-info">
+                            <div class="pengurus-loading-line"></div>
+                            <div class="pengurus-loading-line pengurus-loading-line-short"></div>
+                        </div>
+                    </div>
+                    <div class="pengurus-loading-footer">
+                        <div class="pengurus-loading-arrow"></div>
+                        <div class="pengurus-loading-icons">
+                            <div class="pengurus-loading-icon"></div>
+                            <div class="pengurus-loading-icon"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderDivisionSkeleton(divisionName, members) {
+            const heads = members.filter(user => isHead(user.position));
+            const others = members.filter(user => !isHead(user.position));
+
+            return `
+                <div class="flex flex-col items-center p-6 mb-6 rounded-2xl md:p-8">
+                    ${renderDivisionHeader(divisionName)}
+
+                    ${heads.length ? `
+                        <div class="flex justify-center w-full mb-10">
+                            ${heads.map(renderSkeletonCard).join('')}
+                        </div>
+                    ` : ''}
+
+                    ${others.length ? `
+                        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                            ${others.map(renderSkeletonCard).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        function renderGroupedLoadingState(container, grouped) {
+            container.innerHTML = Object.entries(grouped || {})
+                .map(([division, members]) => renderDivisionSkeleton(division, members))
+                .join('');
+        }
+
+        function renderLoadError(container) {
+            container.innerHTML = `
+                <div class="py-16 text-center text-white" role="alert">
+                    <p class="mb-4 text-lg font-semibold">Data pengurus belum berhasil dimuat.</p>
+                    <button type="button" data-retry-pengurus
+                        class="px-5 py-2 font-semibold text-[#02314A] bg-[#FEF9F1] rounded-full">
+                        Coba lagi
+                    </button>
+                </div>
+            `;
+
+            container.querySelector('[data-retry-pengurus]').addEventListener('click', () => {
+                loadPengurus(document.getElementById('yearSelect').value, true);
+            });
+        }
+
+        async function loadPengurus(year, forceRefresh = false) {
+            const container = document.getElementById('pengurus-container');
+            const loadId = ++activeLoadId;
+
+            if (activePengurusRequest) {
+                activePengurusRequest.abort();
+            }
+
+            stopProfileVideos();
+            container.setAttribute('aria-busy', 'true');
 
             try {
-                const res = await fetch(`{{ route('frontpage.pengurus.filter') }}?year=${year}`);
-                const json = await res.json();
+                let grouped = forceRefresh ? null : pengurusCache.get(year);
 
-                renderPengurus(json.data);
+                if (grouped) {
+                    renderGroupedLoadingState(container, grouped);
+                    await new Promise(resolve => requestAnimationFrame(resolve));
+                } else {
+                    container.style.opacity = '0.45';
+                    container.style.pointerEvents = 'none';
+                }
 
-                container.style.opacity = '1';
-                container.style.pointerEvents = 'auto';
+                if (!grouped) {
+                    activePengurusRequest = new AbortController();
+                    const url = new URL(pengurusEndpoint, window.location.origin);
+                    url.searchParams.set('year', year);
 
-                setTimeout(() => {
-                    const cards = container.querySelectorAll('.member-card-animate');
-                    cards.forEach((card) => {
-                        card.style.opacity = '1';
+                    const response = await fetch(url, {
+                        signal: activePengurusRequest.signal,
+                        headers: { 'Accept': 'application/json' }
                     });
 
-                    setupVideoHoverControls();
-                }, 100);
-            } catch (err) {
-                console.error('Error loading pengurus:', err);
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+
+                    const json = await response.json();
+                    grouped = json.data || {};
+                    pengurusCache.set(year, grouped);
+                }
+
+                if (loadId !== activeLoadId) return;
+
                 container.style.opacity = '1';
                 container.style.pointerEvents = 'auto';
+                await renderPengurus(grouped, loadId);
+                if (loadId !== activeLoadId) return;
+
+                setupVideoHoverControls(container);
+                container.setAttribute('aria-busy', 'false');
+            } catch (error) {
+                if (error.name === 'AbortError' || loadId !== activeLoadId) return;
+
+                console.error('Gagal memuat pengurus:', error);
+                container.style.opacity = '1';
+                container.style.pointerEvents = 'auto';
+                renderLoadError(container);
+                container.setAttribute('aria-busy', 'false');
+            } finally {
+                if (loadId === activeLoadId) {
+                    activePengurusRequest = null;
+                }
             }
         }
 
-        function setupVideoHoverControls() {
-            const videoCards = document.querySelectorAll('.video-card');
+        function stopProfileVideos() {
+            if (profileVideoObserver) {
+                profileVideoObserver.disconnect();
+                profileVideoObserver = null;
+            }
+
+            document.querySelectorAll('#pengurus-container .profile-video').forEach(video => {
+                video.pause();
+                video.removeAttribute('src');
+                video.load();
+            });
+        }
+
+        function hydrateProfileVideo(video) {
+            if (!video || video.hasAttribute('src') || !video.dataset.src) return;
+
+            video.preload = 'metadata';
+            video.src = video.dataset.src;
+            video.load();
+        }
+
+        function setupVideoHoverControls(container) {
+            const videoCards = container.querySelectorAll('.video-card[data-has-video="true"]');
+            if (!videoCards.length) return;
+
+            const supportsHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+            if (supportsHover && 'IntersectionObserver' in window) {
+                profileVideoObserver = new IntersectionObserver(entries => {
+                    entries.forEach(entry => {
+                        if (!entry.isIntersecting) return;
+
+                        hydrateProfileVideo(entry.target.querySelector('.profile-video'));
+                        profileVideoObserver.unobserve(entry.target);
+                    });
+                }, { rootMargin: '120px 0px', threshold: 0.01 });
+            }
 
             videoCards.forEach(card => {
-                const videoSrc = card.dataset.video;
-                if (!videoSrc || videoSrc === '') return;
-
                 const video = card.querySelector('.profile-video');
                 if (!video) return;
 
-                let videoCompleted = false;
+                if (profileVideoObserver) {
+                    profileVideoObserver.observe(card);
+                }
 
-                // Listen for video end
                 video.addEventListener('ended', () => {
-                    videoCompleted = true;
                     video.classList.remove('show-video');
                 });
 
-                // Mouse enter - restart and play
                 card.addEventListener('mouseenter', () => {
-                    if (videoCompleted) {
-                        // Don't restart if video already completed
-                        return;
+                    if (!supportsHover) return;
+
+                    hydrateProfileVideo(video);
+                    const playVideo = () => {
+                        if (!card.matches(':hover')) return;
+                        video.currentTime = 0;
+                        video.classList.add('show-video');
+                        video.play().catch(() => {});
+                    };
+
+                    if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+                        playVideo();
+                    } else {
+                        video.addEventListener('loadeddata', playVideo, { once: true });
                     }
-                    video.currentTime = 0;
-                    video.classList.add('show-video');
-                    video.play().catch(err => console.log('Video play error:', err));
                 });
 
-                // Mouse leave - pause, hide, and reset completed flag
                 card.addEventListener('mouseleave', () => {
                     video.pause();
                     video.classList.remove('show-video');
-                    // Reset flag so video can be played again on next hover
-                    videoCompleted = false;
                 });
             });
         }
@@ -964,6 +1348,56 @@
             return [
                 'Kepala Divisi',
             ].some(p => position.toLowerCase().includes(p.toLowerCase()));
+        }
+
+        function escapeHtml(value) {
+            const element = document.createElement('div');
+            element.textContent = value == null ? '' : String(value);
+            return element.innerHTML;
+        }
+
+        function buildStorageUrl(path) {
+            if (!path) return memberPlaceholderUrl;
+
+            const encodedPath = String(path)
+                .split('/')
+                .map(segment => encodeURIComponent(segment))
+                .join('/');
+
+            return `${storageBaseUrl}/${encodedPath}`;
+        }
+
+        function safeExternalUrl(value) {
+            if (!value) return '';
+
+            try {
+                const url = new URL(value, window.location.origin);
+                return ['http:', 'https:'].includes(url.protocol) ? url.href : '';
+            } catch (_) {
+                return '';
+            }
+        }
+
+        function setupProfileImages(section) {
+            section.querySelectorAll('.profile-image').forEach(image => {
+                const showImage = () => {
+                    image.classList.add('is-loaded');
+                    image.previousElementSibling?.classList.add('is-hidden');
+                };
+
+                image.addEventListener('load', showImage, { once: true });
+                image.addEventListener('error', () => {
+                    if (image.src !== memberPlaceholderUrl) {
+                        image.src = memberPlaceholderUrl;
+                    } else {
+                        showImage();
+                    }
+                }, { once: true });
+
+                if (image.complete && image.naturalWidth > 0) {
+                    showImage();
+                }
+            });
         }
 
         function renderLinkedinIcon() {
@@ -984,23 +1418,27 @@
 
         function renderSocial(user) {
             let html = '';
+            const linkedinUrl = safeExternalUrl(user.linkedin);
+            const instagramUrl = safeExternalUrl(user.instagram);
 
-            if (user.linkedin) {
+            if (linkedinUrl) {
                 html += `
-                <a href="${user.linkedin}"
+                <a href="${escapeHtml(linkedinUrl)}"
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label="LinkedIn ${escapeHtml(user.name)}"
                     class="w-10 h-10 flex items-center justify-center rounded-md bg-[#FEF9F1] text-[#910E19] hover:bg-[#e8dcc8] transition-colors duration-200">
                     ${renderLinkedinIcon()}
                 </a>
                 `;
             }
 
-            if (user.instagram) {
+            if (instagramUrl) {
                 html += `
-                <a href="${user.instagram}"
+                <a href="${escapeHtml(instagramUrl)}"
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label="Instagram ${escapeHtml(user.name)}"
                     class="w-10 h-10 flex items-center justify-center rounded-md bg-[#FEF9F1] text-[#910E19] hover:bg-[#e8dcc8] transition-colors duration-200">
                     ${renderInstagramIcon()}
                 </a>
@@ -1013,32 +1451,32 @@
         function renderMemberCard(user) {
             let mediaContent = '';
             if (user.profile_video) {
-                //  VIDEO VERSION - RESTART ON HOVER
-                mediaContent = `        
-        <!--  VIDEO (z-30) -->
-        <video class="absolute inset-0 w-full h-full object-cover z-[30] profile-video" 
-               muted playsinline preload="metadata">
-            <source src="/storage/${user.profile_video}" type="video/mp4">
-        </video>
-        `;
+                mediaContent = `
+                    <video class="absolute inset-0 w-full h-full object-cover z-[30] profile-video"
+                        muted playsinline preload="none" data-src="${escapeHtml(buildStorageUrl(user.profile_video))}"
+                        aria-hidden="true"></video>
+                `;
             }
 
+            const photoUrl = buildStorageUrl(user.photo);
+            const hasVideo = user.profile_video ? 'true' : 'false';
+
             return `
-    <div class="transition-opacity duration-500 ease-out opacity-0 member-card-animate video-card" data-video="${user.profile_video || ''}">
+    <div class="transition-opacity duration-500 ease-out opacity-0 member-card-animate video-card" data-has-video="${hasVideo}">
         <div class="relative overflow-hidden shadow-lg member-card-fixed group">
             <div class="relative flex flex-col justify-end member-card-red-section" style="clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 0px), 0 calc(100% - 0px), 0 20px);">
                 
                 ${mediaContent}
-                
-                <!-- FOTO STATIC (z-20) -->
-                <img src="/storage/${user.photo}"
+
+                <div class="profile-media-placeholder" aria-hidden="true"></div>
+                <img src="${escapeHtml(photoUrl)}"
                      class="absolute inset-0 w-full h-full object-cover z-[20] profile-image transition-all duration-1000 ease-out"
-                     alt="${user.name}" loading="lazy">
+                     alt="${escapeHtml(user.name)}" loading="lazy">
                      
                 <!-- NAME OVERLAY (z-60) -->
-                <div class="relative z-[60] w-full px-4 py-3 text-center bg-black/60 backdrop-blur-sm">
-                    <h4 class="text-xl font-bold text-white member-name-text">${user.name}</h4>
-                    <p class="text-sm text-white/90">${user.position}</p>
+                <div class="relative z-[60] w-full px-4 py-3 text-center member-info-overlay">
+                    <h4 class="text-xl font-bold text-white member-name-text">${escapeHtml(user.name)}</h4>
+                    <p class="text-sm text-white/90">${escapeHtml(user.position)}</p>
                 </div>
             </div>
             
@@ -1121,16 +1559,29 @@
         }
 
 
-        function renderPengurus(grouped) {
+        async function renderPengurus(grouped, loadId) {
             const container = document.getElementById('pengurus-container');
             container.innerHTML = '';
+            const divisions = Object.entries(grouped || {});
 
-            Object.entries(grouped).forEach(([division, members]) => {
+            if (!divisions.length) {
+                container.innerHTML = '<p class="py-16 text-lg text-center text-white">Belum ada data pengurus untuk periode ini.</p>';
+                return;
+            }
+
+            for (const [division, members] of divisions) {
+                if (loadId !== activeLoadId) return;
                 container.insertAdjacentHTML(
                     'beforeend',
                     renderDivisionContainer(division, members)
                 );
-            });
+
+                setupProfileImages(container.lastElementChild);
+                await new Promise(resolve => requestAnimationFrame(resolve));
+                container.lastElementChild.querySelectorAll('.member-card-animate').forEach(card => {
+                    card.style.opacity = '1';
+                });
+            }
         }
 
         //  VIDEO PROFILE MODAL (Frontend)
