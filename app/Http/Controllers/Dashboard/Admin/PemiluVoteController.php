@@ -8,6 +8,7 @@ use App\Models\PemiluVote;
 use Illuminate\Http\Request;
 use App\Repositories\PemiluVoteRepository;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class PemiluVoteController extends Controller
 {
@@ -52,14 +53,19 @@ class PemiluVoteController extends Controller
         ])->validate();
         
         try {
-            $this->pemiluVoteRepository->createVoter($request);
-            // $this->postRepository->save($content);
+            $result = $this->pemiluVoteRepository->createVoter($request);
+            $message = "Tambah Data Vote Berhasil ({$result['inserted']} NIM ditambahkan";
+            if ($result['skipped'] > 0) {
+                $message .= ", {$result['skipped']} NIM dilewati karena sudah terdaftar";
+            }
+            $message .= ')';
+
             return redirect()->route('dashboard.admin.pemilu-vote.index')->with([
                 'type' => 'success',
-                'message' => 'Tambah Data Vote Berhasil'
-            ]) ;
+                'message' => $message,
+            ]);
         } catch (\Exception $e) {
-            throw $e;
+            \Log::error('Tambah voter error: ' . $e->getMessage());
             return redirect()->route('dashboard.admin.pemilu-vote.index')->with([
                 'type' => 'danger',
                 'message' => 'Tambah Data Vote Gagal, Terjadi kesalahan pada sistem.'
@@ -69,18 +75,24 @@ class PemiluVoteController extends Controller
     public function store(Request $request)
     {
         \Validator::make($request->all(), [
-            'nim' => 'required',
+            'nim' => 'required|unique:pemilu_vote,nim',
             'vote_status' => 'required',
             'email_status' => 'required',
+        ], [
+            'nim.unique' => 'NIM ini sudah terdaftar sebagai pemilih.',
         ])->validate();
         
         try {
-            $this->pemiluVoteRepository->save($request->all());
-            // $this->postRepository->save($content);
+            PemiluVote::create([
+                'nim' => $request->nim,
+                'token' => Str::random(8),
+                'vote_status' => $request->vote_status,
+                'email_status' => $request->email_status,
+            ]);
             return redirect()->route('dashboard.admin.pemilu-vote.index')->with([
                 'type' => 'success',
                 'message' => 'Tambah Data Vote Berhasil'
-            ]) ;
+            ]);
         } catch (\Exception $e) {
             return redirect()->route('dashboard.admin.pemilu-vote.create')->with([
                 'type' => 'danger',

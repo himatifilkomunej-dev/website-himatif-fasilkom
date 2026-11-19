@@ -162,23 +162,38 @@ class PemiluVoteRepository
                 }
             }
             // Step 3: Remove duplicate NIMs and prepare for saving
-            $nimList = array_unique($nimList);
+            $nimList = array_map('trim', $nimList);
+            $nimList = array_filter(array_unique($nimList));
+
+            $inserted = 0;
+            $skipped = 0;
 
             foreach ($nimList as $nim) {
+                if (empty($nim)) continue;
+
                 \Validator::make(['nim' => $nim], [
                     'nim' => 'required|string|max:20', // Ensure NIM meets requirements
                 ])->validate();
         
-                // Save each NIM to the database
-                PemiluVote::create([
-                    'nim' => $nim,
-                    'token' => Str::random(8),
-                    'vote_status' => 0, // Default vote status
-                    'email_status' => 0, // Default email status
-                ]);
+                // Cek apakah NIM sudah ada di database untuk mencegah duplicate entry error
+                $exists = PemiluVote::where('nim', $nim)->exists();
+                if (!$exists) {
+                    PemiluVote::create([
+                        'nim' => $nim,
+                        'token' => Str::random(8),
+                        'vote_status' => 0, // Default vote status
+                        'email_status' => 0, // Default email status
+                    ]);
+                    $inserted++;
+                } else {
+                    $skipped++;
+                }
             }
         
-            return 1;
+            return [
+                'inserted' => $inserted,
+                'skipped' => $skipped,
+            ];
         } catch (\Throwable $t) {
             report($t);
             throw $t;
