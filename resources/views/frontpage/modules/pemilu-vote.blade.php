@@ -15,7 +15,7 @@
         <h1 class="pemilu-title opacity-0 translate-y-8 transition-all duration-1000 ease-out" data-animate>PEMILIHAN
             KANDIDAT</h1>
         <p class="pemilu-subtitle opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-200" data-animate>Ketua
-            Umum HIMATIF 2025</p>
+            Umum HIMATIF 2026</p>
     </div>
 
 
