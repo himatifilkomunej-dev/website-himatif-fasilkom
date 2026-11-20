@@ -14,7 +14,7 @@
             class="header-decoration-right opacity-0 translate-x-8 transition-all duration-1000 ease-out" data-animate-right>
 
         <h1 class="pemilu-title opacity-0 translate-y-8 transition-all duration-1000 ease-out" data-animate>PEMILU HIMATIF
-            2025</h1>
+            2026</h1>
         <p class="pemilu-subtitle opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-200" data-animate>
             Dengan Tema</p>
         <div class="theme-card opacity-0 translate-y-8 transition-all duration-1000 ease-out delay-400" data-animate>

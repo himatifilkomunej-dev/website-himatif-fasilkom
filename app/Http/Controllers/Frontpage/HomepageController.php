@@ -11,6 +11,7 @@ use App\Repositories\DivisionRepository;
 use App\Repositories\PostRepository;
 use App\Repositories\ProkerRepository;
 use App\Repositories\UserRepository;
+use App\Services\PengurusService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\ReviewAlumni;
@@ -66,11 +67,13 @@ class HomepageController extends Controller
     //     return view('frontpage.modules.pengurus', compact(['header', 'divisions', 'pengurus']));
     // }
 
-    public function getPengurus()
+    public function getPengurus(PengurusService $pengurusService)
     {
         $header = (array) json_decode($this->pageContentRepository->findBySlug('header-pengurus')->data);
-        $divisions = $this->divisionRepository->getParent();
-        return view('frontpage.modules.pengurus', compact(['header', 'divisions']));
+        $initialYear = '2025';
+        $initialPengurus = $pengurusService->byYear($initialYear)['data'];
+
+        return view('frontpage.modules.pengurus', compact('header', 'initialYear', 'initialPengurus'));
     }
 
     public function getProker(Request $request)
